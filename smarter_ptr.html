@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>smarter pointers</title>
+        <meta charset="utf-8" />
+        <link href="http://gpuoti.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Full Atom Feed" />
+        <link href="http://gpuoti.github.io/feeds/cpp.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/pygment.css" />
+
+        <script src="http://gpuoti.github.io/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="http://gpuoti.github.io">Coder Notepad <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="http://gpuoti.github.io">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://gpuoti.github.io/smarter_ptr.html" rel="bookmark"
+                   title="Permalink to smarter pointers">smarter pointers</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2014-03-26T00:00:00">
+                Wed 26 March 2014
+              </abbr>
+              <address class="vcard author">
+                By <a class="url fn" href="http://gpuoti.github.io/author/giusepe-puoti.html">Giusepe Puoti</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>In a previous article, I've start discussing about a Smart pointers implementation that aims to let me use C++ as a higher level language with some minimal automatic garbage collection functionality.
+I know that someone will disagree with this approach and also I quite agree with ones that recommend to use Java (or C# or whatever) if it is what you want or what you need, but, sometime you simple can't get what you want or what will possibly be the best choice.</p>
+<p>So i still find some good reasons that make me say it's useful to prepare some facilities that helps me use C++ in a simple, less error prone, and more productive way.</p>
+<dl class="docutils">
+<dt>you can't decide by yourself</dt>
+<dd>In my experience this happen because these languages are wrongly perceived as slow by management and, even if the inefficiency of our code is mostly determined by our algorithms and container we use, speed requirements is used as rationale to write code in C or C++.</dd>
+<dt>still can't decide by yourself</dt>
+<dd>Moreover sometime a new language and probably new framework are also difficult to accept for colleagues that possibly are far more ready to be productive with the good old C++.</dd>
+<dt>do not reinvent the wheel</dt>
+<dd>Finally (but this could be the most technically important problem), you probably have large codebase not ready to be used from languages you'd like to adopt.</dd>
+</dl>
+<p>So, even if, in general terms, you want (and need) Java (or whatever), you could not get it, but you must to use C++. In this cases using it in a way that is not the most &quot;right&quot; or efficient but the most productive, could be the best compromise.</p>
+<div class="section" id="adding-inheritance-capabilities">
+<h2>adding inheritance capabilities</h2>
+<p>A strong limitation of the implementation discussed last time, is the unavailability of upcast and polymorphic behavior of my implementation of smart pointers.
+So, let start make the pointers smarter with a test. I'll write them using <em>gtest</em>.</p>
+<div class="highlight"><pre><span class="n">TEST</span><span class="p">(</span><span class="n">smart_derived</span><span class="p">,</span> <span class="n">assignToSuperclassWrapper</span><span class="p">){</span>
+    <span class="n">Object</span> <span class="n">o2</span><span class="p">;</span>
+    <span class="p">{</span>
+            <span class="n">Derived</span> <span class="n">o1</span> <span class="o">=</span> <span class="n">SmartCreate</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">&gt;</span><span class="p">();</span>
+            <span class="n">o1</span><span class="o">-&gt;</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">);</span>
+            <span class="n">o2</span> <span class="o">=</span> <span class="n">o1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">ASSERT_EQ</span><span class="p">(</span><span class="n">o2</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(),</span> <span class="s">&quot;foo&quot;</span><span class="p">);</span>
+</pre></div>
+<p>With the old implementation of smart pointers this would not work, instead the application will crash with a segmentation fault because of an wrong reference counting.
+In fact only references with the same type of the actually created object were taken into account. Do you remember we had a static map...</p>
+<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">Smart</span> <span class="p">{</span>
+<span class="k">static</span> <span class="n">map</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">counters</span><span class="p">;</span>
+
+<span class="cm">/* ... */</span>
+</pre></div>
+<p>So when <em>Derived</em> object o1 is assigned to o2, it count one reference to the actual object as a <em>Derived</em> and 1 reference as <em>Object</em>. When, in the example, o1 exits its scope, its reference counting drop to 0 and it is destoyed even if it is still referenced as a simple <em>Object</em>.</p>
+<p>Remember also that we want the object to be shared, so, all the references must share the same actual object, make a clone as the object get assigned is not an option even if we didn't care about performances.</p>
+<p>What we must do is count any reference to an object regardless of its type. So we will have only one reference counter table shared by all reference counter type.
+Because i don't like to have variables at global scope (ok, static variables are global too but i like them more ^_^ ) I've introduced a superclass that all smart ptr classes derive from that will do the job of reference counting and deallocating object when required.</p>
+<p>I've chosen <em>Smarty</em> as a cool name for my smarter pointers. So the superclass of all the <em>Smarty</em> template class instances, will be <em>Smarties</em>.</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Smarties</span><span class="p">{</span>
+<span class="nl">protected:</span>
+    <span class="k">static</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">*</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">counters</span><span class="p">;</span>
+
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="n">decreaseRefs</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">p</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">){</span>
+                    <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span> <span class="s">&quot;decreasing counter &quot;</span> <span class="o">&lt;&lt;</span> <span class="o">--</span><span class="n">counters</span><span class="p">[(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">p</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">counters</span><span class="p">[(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+                            <span class="k">delete</span> <span class="n">p</span><span class="p">;</span>
+                    <span class="p">}</span>
+            <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">increaseRefs</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">p</span><span class="p">){</span>
+            <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">*</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span><span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">it</span><span class="p">;</span>
+
+            <span class="k">if</span><span class="p">(</span><span class="n">p</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">){</span>
+                    <span class="n">it</span> <span class="o">=</span> <span class="n">counters</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">it</span> <span class="o">!=</span> <span class="n">counters</span><span class="p">.</span><span class="n">end</span><span class="p">()){</span>
+                            <span class="o">++</span><span class="n">counters</span><span class="p">[</span><span class="n">p</span><span class="p">];</span>
+                            <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span> <span class="s">&quot;increasing counter &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">counters</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>   <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span><span class="p">{</span>
+                            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;first counting &quot;</span><span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+                            <span class="n">counters</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                    <span class="p">}</span>
+            <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+<p>All of its member are protected because i need to use them from <em>Smarty</em> instances.</p>
+<p>The two methods that <em>Smarties</em> can accept are really self explanatory, them receives a pointer as unique parameter. The type of these pointers is not important but The <em>decraseRefs</em> method, when necessary, also delete the object and delete operator do not like void* that much, so i've written it as a template method and used cast to void* to search into the map. Please notice that this cast is really not problematic.</p>
+</div>
+<div class="section" id="the-smarty-implementation">
+<h2>The <em>Smarty</em> implementation</h2>
+<p>It is quite similar to the one of my old <em>Smart</em> objects. But I've added some methods to let implicit upcast work as you could expect. Here follows an extract.</p>
+<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">Smarty</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Smarties</span> <span class="p">{</span>
+<span class="nl">public:</span>
+        <span class="k">typedef</span> <span class="n">T</span> <span class="n">wrappedType</span><span class="p">;</span>
+
+<span class="nl">private:</span>
+
+        <span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">;</span>
+
+        <span class="kt">void</span> <span class="nf">increaseRefs</span><span class="p">(){</span>
+                <span class="n">Smarties</span><span class="o">::</span><span class="n">increaseRefs</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="nf">decreaseRefs</span><span class="p">(){</span>
+                <span class="n">Smarties</span><span class="o">::</span><span class="n">decreaseRefs</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="nf">assign</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">np</span><span class="p">){</span>
+                <span class="n">decreaseRefs</span><span class="p">();</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="p">;</span>
+                <span class="n">increaseRefs</span><span class="p">();</span>
+        <span class="p">}</span>
+
+
+<span class="nl">public:</span>
+
+        <span class="cm">/* ctors and methods similar to Smart */</span>
+
+        <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">K</span><span class="o">&gt;</span> <span class="n">Smarty</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Smarty</span><span class="o">&lt;</span><span class="n">K</span><span class="o">&gt;&amp;</span> <span class="n">obj</span><span class="p">){</span>
+                <span class="n">T</span><span class="o">*</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">obj</span><span class="p">.</span><span class="k">operator</span><span class="o">-&gt;</span><span class="p">();</span>
+                <span class="n">assign</span><span class="p">(</span><span class="n">tmp</span><span class="p">);</span>
+                <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+        <span class="p">}</span>
+
+
+        <span class="n">Smarty</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Smarty</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">obj</span><span class="p">){</span>
+                <span class="n">T</span><span class="o">*</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">obj</span><span class="p">.</span><span class="k">operator</span><span class="o">-&gt;</span><span class="p">();</span>
+                <span class="n">assign</span><span class="p">(</span><span class="n">tmp</span><span class="p">);</span>
+                <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+        <span class="p">}</span>
+
+
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">K</span><span class="o">&gt;</span> <span class="k">operator</span> <span class="n">Smarty</span><span class="o">&lt;</span><span class="n">K</span><span class="o">&gt;</span><span class="p">(){</span>
+                <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+<p>I have some private helper methods and the old assignment operator. I will discuss later why still have that assignment.</p>
+<p>But <em>Smarty</em> has more capabilities. Because of its template assignment method, any <em>Smarty</em> wrapper that is constructed around something that is assignable to an object of the type wrapped by the actual <em>Smarty</em>, is assignable to the <em>Smarty</em> wrapper in turn.</p>
+<p>The only assignment operator makes te test written on top of this post pass but not the following one.</p>
+<div class="highlight"><pre><span class="n">TEST</span><span class="p">(</span><span class="n">smart_derived</span><span class="p">,</span> <span class="n">assignToSuperclassWrapper</span><span class="p">){</span>
+    <span class="n">Object</span> <span class="n">o2</span> <span class="o">=</span> <span class="n">SmartCreate</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">&gt;</span><span class="p">();</span>
+    <span class="p">{</span>
+            <span class="n">Derived</span> <span class="n">o1</span> <span class="o">=</span> <span class="n">SmartCreate</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">&gt;</span><span class="p">();</span>
+            <span class="n">o1</span><span class="o">-&gt;</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">);</span>
+            <span class="n">o2</span> <span class="o">=</span> <span class="n">o1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">ASSERT_EQ</span><span class="p">(</span><span class="n">o2</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(),</span> <span class="s">&quot;foo&quot;</span><span class="p">);</span>
+</pre></div>
+<p>This is because of a compile time error at the first test line: <em>conversion from ‘Smarty&lt;DerivedImpl&gt;’ to non-scalar type ‘Object {aka Smarty&lt;ObjectImpl&gt;}’ requested</em>. I've simply given the compiler what it were asking me with the conversion method using the fact that the upcast assignment operator is in place yet.</p>
+</div>
+<div class="section" id="about-the-old-assignment">
+<h2>about the old assignment</h2>
+<p>It is still not clear to me why but, after having substituted the old assignment operator with the template one i started to no more pass the this test:</p>
+<div class="highlight"><pre>        Object o2;
+        {
+                Object o1 = SmartCreate&lt;Object&gt;();
+                o1-&gt;set(&quot;foo&quot;);
+                o2 = o1;
+        }
+
+        ASSERT_EQ(o2-&gt;get(), &quot;foo&quot;);
+}
+</pre></div>
+<p>After some debug i've solved by mainteining the old assignment operator, but, to be honest, it is still not clear to me why this works.</p>
+</div>
+
+            </div><!-- /.entry-content -->
+            <div class="comments">
+              <h3>Comments</h3>
+              <div id="disqus_thread"></div>
+              <script type="text/javascript">
+                var disqus_identifier = "smarter_ptr.html";
+                (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://codernotepad.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+              </script>
+            </div>
+
+
+        </div><!-- /.eleven.columns -->
+        
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="http://gpuoti.github.io/category/cpp.html">cpp</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-1"><a href="http://gpuoti.github.io/tag/cpp.html">cpp</a></li>
+	    <li class="tag-1"><a href="http://gpuoti.github.io/tag/smart_ptr.html">smart_ptr</a></li>
+	    <li class="tag-1"><a href="http://gpuoti.github.io/tag/shared_ptr.html">shared_ptr</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://github.com/gpuoti">Github</a></li>
+    <li><a href="http://www.linkedin.com/pub/giuseppe-puoti/2b/b37/748">Linkedin</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+                <li><div class="btn primary"><a href="https://github.com/gpuoti" target="_blank">Github</a></div></li>
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'codernotepad';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  <script src="http://gpuoti.github.io/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://gpuoti.github.io/theme/js/libs/gumby.min.js"></script>
+  <script src="http://gpuoti.github.io/theme/js/plugins.js"></script>
+</body>
+</html>

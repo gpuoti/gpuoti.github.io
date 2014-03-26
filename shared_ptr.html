@@ -118,16 +118,16 @@ I would like to write something such as:</p>
 <p>Moreover, what is implicit in the example is the fact that objects are automatically deleted when they are no more useful. That is no more SmartTestClass objects refers to them. In Other words, any SmartTestClass object will share the property of the referred object with any other referring to it while it continue to handle that object.</p>
 <p>This can be done using a wrapper class that can wrap any object and tracing for each object wrapped the number of wrappers.
 This is clearly a template class, i called it <em>Smart</em>:</p>
-<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
-<span class="k">class</span> <span class="nc">Smart</span> <span class="p">{</span>
-        <span class="k">static</span> <span class="n">map</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">counters</span><span class="p">;</span>
+<div class="highlight"><pre>    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+    <span class="k">class</span> <span class="nc">Smart</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="n">map</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">counters</span><span class="p">;</span>
 
 <span class="nl">private:</span>
-        <span class="k">typedef</span> <span class="n">T</span> <span class="n">wrappedType</span><span class="p">;</span>
-        <span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">;</span>
+    <span class="k">typedef</span> <span class="n">T</span> <span class="n">wrappedType</span><span class="p">;</span>
+    <span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">;</span>
 
-        <span class="cm">/*...*/</span>
-<span class="p">}</span>
+    <span class="cm">/*...*/</span>
+    <span class="p">};</span>
 </pre></div>
 <p>It has just one instance variable storing the pointer to the wrapped objects, the one that actually will response to incoming messages.
 There is also an instance attribute, a map that store, for each wrapped object, the number of reference. When a <em>Smart</em> object will start handle an different object it will increase the entry in the map corresponding to that object. When a <em>Smart</em> object handle no more an object will decrease the corresponding entry in the map, if this entry goes down to zero, the wrapped object is destroyed.</p>
@@ -329,9 +329,9 @@ This is a limitation overcome but i will discuss it in a different post to not o
 
 <h4>Tags</h4>
 	<ul>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/shared_ptr.html">shared_ptr</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/cpp.html">cpp</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/smart_ptr.html">smart_ptr</a></li>
+	    <li class="tag-1"><a href="http://gpuoti.github.io/tag/cpp.html">cpp</a></li>
+	    <li class="tag-1"><a href="http://gpuoti.github.io/tag/smart_ptr.html">smart_ptr</a></li>
+	    <li class="tag-1"><a href="http://gpuoti.github.io/tag/shared_ptr.html">shared_ptr</a></li>
 </ul>
 
 
