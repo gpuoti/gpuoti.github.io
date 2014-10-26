@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>smart ordering definition (2nd part)</title>
+        <meta charset="utf-8" />
+        <link href="http://gpuoti.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Full Atom Feed" />
+        <link href="http://gpuoti.github.io/feeds/cpp.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/pygment.css" />
+
+        <script src="http://gpuoti.github.io/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="http://gpuoti.github.io">Coder Notepad <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="http://gpuoti.github.io">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://gpuoti.github.io/smart_orderby_2.html" rel="bookmark"
+                   title="Permalink to smart ordering definition (2nd part)">smart ordering definition (2nd part)</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2014-10-26T00:00:00">
+                dom 26 ottobre 2014
+              </abbr>
+              <address class="vcard author">
+                By <a class="url fn" href="http://gpuoti.github.io/author/giusepe-puoti.html">Giusepe Puoti</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>Here I am to honor the promise I've done closing my last article to explain (I mean even to myself) more tricks to write better ordering composition.
+What I had in mind closing the article was about situations where containers actually contains pointers to our objects. Say, for example, you want to order something like:</p>
+<div class="highlight"><pre><span class="n">vector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">*&gt;</span> <span class="n">people</span><span class="p">;</span>
+
+<span class="n">people</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="k">new</span> <span class="n">Person</span><span class="p">(</span><span class="s">&quot;Jill&quot;</span><span class="p">,</span> <span class="s">&quot;Evans&quot;</span><span class="p">,</span> <span class="mi">29</span><span class="p">));</span>
+<span class="n">people</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="k">new</span> <span class="n">Person</span><span class="p">(</span><span class="s">&quot;Jill&quot;</span><span class="p">,</span> <span class="s">&quot;Evans&quot;</span><span class="p">,</span> <span class="mi">23</span><span class="p">));</span>
+
+<span class="n">people</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="k">new</span> <span class="n">Person</span><span class="p">(</span><span class="s">&quot;Jill&quot;</span><span class="p">,</span> <span class="s">&quot;Doe&quot;</span><span class="p">,</span> <span class="mi">31</span><span class="p">));</span>
+<span class="n">people</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="k">new</span> <span class="n">Person</span><span class="p">(</span><span class="s">&quot;Joe&quot;</span><span class="p">,</span>  <span class="s">&quot;Doe&quot;</span><span class="p">,</span> <span class="mi">34</span><span class="p">));</span>
+<span class="n">people</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="k">new</span> <span class="n">Person</span><span class="p">(</span><span class="s">&quot;Alan&quot;</span><span class="p">,</span> <span class="s">&quot;Doe&quot;</span><span class="p">,</span> <span class="mi">68</span><span class="p">));</span>
+
+<span class="c1">// this will not work!</span>
+<span class="n">sort</span><span class="p">(</span><span class="n">people</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">people</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">SmartOrderBy</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">::</span><span class="n">OrderBySurname</span><span class="p">,</span> <span class="n">Person</span><span class="o">::</span><span class="n">OrderByName</span><span class="o">&gt;</span><span class="p">());</span>
+</pre></div>
+<p>The code above do not compile because SamartOrderBy, as defined last time, will pretend to call the two component ordering functions using pointer to Person ant that overloads are not defined.</p>
+<p>As usually in engineering there are more then one possible solution, let discus a couple of them.</p>
+<div class="section" id="first-solution">
+<h2>first solution</h2>
+<p>What if we change the SmartOrderBy struct to have an overloaded operator() to accept pointer?</p>
+<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Ord1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">Ord2</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">SmartOrderBy</span><span class="p">{</span>
+<span class="nl">private:</span>
+        <span class="n">Ord1</span> <span class="n">o1</span><span class="p">;</span>
+        <span class="n">Ord2</span> <span class="n">o2</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+
+        <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">Obj</span><span class="o">&gt;</span>
+        <span class="kt">bool</span> <span class="k">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">Obj</span><span class="o">&amp;</span> <span class="n">obj1</span><span class="p">,</span> <span class="k">const</span> <span class="n">Obj</span><span class="o">&amp;</span> <span class="n">obj2</span><span class="p">){</span>
+                <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">o1</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">o1</span><span class="p">(</span><span class="n">obj2</span><span class="p">,</span> <span class="n">obj1</span><span class="p">)</span> <span class="p">){</span>
+                        <span class="k">return</span> <span class="n">o2</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">return</span> <span class="n">o1</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">Obj</span><span class="o">&gt;</span>
+        <span class="kt">bool</span> <span class="k">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">Obj</span><span class="o">*</span> <span class="n">pObj1</span><span class="p">,</span>  <span class="k">const</span> <span class="n">Obj</span><span class="o">*</span> <span class="n">pObj2</span><span class="p">){</span>
+                <span class="k">const</span> <span class="n">Obj</span><span class="o">&amp;</span> <span class="n">obj1</span> <span class="o">=</span> <span class="o">*</span><span class="n">pObj1</span><span class="p">;</span>
+                <span class="k">const</span> <span class="n">Obj</span><span class="o">&amp;</span> <span class="n">obj2</span> <span class="o">=</span> <span class="o">*</span><span class="n">pObj2</span><span class="p">;</span>
+
+                <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">o1</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">o1</span><span class="p">(</span><span class="n">obj2</span><span class="p">,</span> <span class="n">obj1</span><span class="p">)</span> <span class="p">){</span>
+                        <span class="k">return</span> <span class="n">o2</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">return</span> <span class="n">o1</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+<p>This will not work well because when we call the <em>operator()</em> using pointers as parameters, the compiler create an implementation of the first <em>operator()</em> with <em>Obj = Person*</em> so that the pointer to reference conversion do not take place.</p>
+<p>What I've written in the example above is not really an overload, to write one the two <em>operator()</em> must have a common understanding of the template parameter <em>Obj</em> so, I should move that to struct level writing:</p>
+<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Ord1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">Ord2</span><span class="p">,</span> <span class="k">typename</span> <span class="n">Obj</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">SmartOrderBy</span><span class="p">{</span>
+<span class="nl">private:</span>
+        <span class="n">Ord1</span> <span class="n">o1</span><span class="p">;</span>
+        <span class="n">Ord2</span> <span class="n">o2</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+
+        <span class="kt">bool</span> <span class="nf">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">Obj</span><span class="o">&amp;</span> <span class="n">obj1</span><span class="p">,</span> <span class="k">const</span> <span class="n">Obj</span><span class="o">&amp;</span> <span class="n">obj2</span><span class="p">){</span>
+                <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">o1</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">o1</span><span class="p">(</span><span class="n">obj2</span><span class="p">,</span> <span class="n">obj1</span><span class="p">)</span> <span class="p">){</span>
+                        <span class="k">return</span> <span class="n">o2</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">return</span> <span class="n">o1</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kt">bool</span> <span class="nf">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">Obj</span><span class="o">*</span> <span class="n">pObj1</span><span class="p">,</span>  <span class="k">const</span> <span class="n">Obj</span><span class="o">*</span> <span class="n">pObj2</span><span class="p">){</span>
+                <span class="k">const</span> <span class="n">Obj</span><span class="o">&amp;</span> <span class="n">obj1</span> <span class="o">=</span> <span class="o">*</span><span class="n">pObj1</span><span class="p">;</span>
+                <span class="k">const</span> <span class="n">Obj</span><span class="o">&amp;</span> <span class="n">obj2</span> <span class="o">=</span> <span class="o">*</span><span class="n">pObj2</span><span class="p">;</span>
+
+                <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">o1</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">o1</span><span class="p">(</span><span class="n">obj2</span><span class="p">,</span> <span class="n">obj1</span><span class="p">)</span> <span class="p">){</span>
+                        <span class="k">return</span> <span class="n">o2</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">return</span> <span class="n">o1</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">main</span><span class="p">(){</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">*&gt;</span> <span class="n">people</span><span class="p">;</span>
+        <span class="p">...</span>
+
+        <span class="n">sort</span><span class="p">(</span> \
+                <span class="n">people</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> \
+                <span class="n">people</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span>   \
+                <span class="n">SmartOrderBy</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">::</span><span class="n">OrderBySurname</span><span class="p">,</span> <span class="n">Person</span><span class="o">::</span><span class="n">OrderByName</span><span class="p">,</span> <span class="n">Person</span><span class="o">&gt;</span><span class="p">()</span>     \
+        <span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="n">This</span> <span class="n">works</span> <span class="n">but</span> <span class="n">you</span> <span class="n">have</span> <span class="n">to</span> <span class="n">explicitly</span> <span class="n">specify</span> <span class="n">you</span> <span class="n">are</span> <span class="n">instantiating</span> <span class="n">an</span> <span class="n">ordering</span> <span class="n">on</span> <span class="o">*</span><span class="n">Person</span><span class="o">*</span> <span class="n">objects</span> <span class="n">and</span><span class="p">,</span> <span class="k">if</span> <span class="n">you</span> <span class="n">are</span> <span class="n">nesting</span> <span class="n">one</span> <span class="n">SmartOrderBy</span> <span class="n">into</span> <span class="n">another</span> <span class="k">this</span> <span class="n">apply</span> <span class="n">to</span> <span class="n">all</span> <span class="k">template</span> <span class="n">instantiation</span><span class="p">.</span> <span class="n">It</span> <span class="n">may</span> <span class="n">be</span> <span class="n">quite</span> <span class="n">verbose</span><span class="p">.</span> <span class="n">Of</span> <span class="n">course</span> <span class="n">typedefs</span> <span class="n">can</span> <span class="n">come</span> <span class="n">to</span> <span class="n">rescue</span><span class="p">.</span>
+</pre></div>
+</div>
+<div class="section" id="another-possible-solution">
+<h2>another possible solution</h2>
+<p>One different approach can be wrap the functor with another whose only responsibility is to adapt the incoming parameters to be acceptable to the wrapped functor.
+It is really simply implemented like:</p>
+<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Func</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">AcceptPointer</span> <span class="p">{</span>
+        <span class="n">Func</span> <span class="n">f</span><span class="p">;</span>
+
+        <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+        <span class="kt">bool</span> <span class="k">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="n">T</span> <span class="n">y</span><span class="p">){</span>
+                <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">y</span><span class="p">);</span>
+        <span class="p">}</span>
+
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">main</span><span class="p">(){</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">*&gt;</span> <span class="n">people</span><span class="p">;</span>
+        <span class="p">...</span>
+
+        <span class="n">sort</span><span class="p">(</span> \
+                <span class="n">people</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> \
+                <span class="n">people</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span>   \
+                <span class="n">AcceptPointer</span> <span class="o">&lt;</span><span class="n">SmartOrderBy</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">::</span><span class="n">OrderBySurname</span><span class="p">,</span> <span class="n">Person</span><span class="o">::</span><span class="n">OrderByName</span><span class="o">&gt;</span> <span class="o">&gt;</span><span class="p">()</span> \
+        <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+<p>Also here the solution come at cost of little verbosity in use but, in exchange, we have the possibility to use it with any binary predicate to let it accept pointers as input.
+In case of nesting SmartOrderBy functors, there is no additional verbosity cost, because the composite functor is adapted by the most external wrapper as a whole.</p>
+<p>Even more, typedefs come to help use so, to me, the cost for this solution is not so expensive.</p>
+</div>
+<div class="section" id="conclusions">
+<h2>conclusions</h2>
+<p>I find this last option a good one, I'm sure there is some better one, but them are probably outside my current capacity. Hope this will help you to better understand template meta-programming and find its convenient everyday programming use.</p>
+</div>
+
+            </div><!-- /.entry-content -->
+            <div class="comments">
+              <h3>Comments</h3>
+              <div id="disqus_thread"></div>
+              <script type="text/javascript">
+                var disqus_identifier = "smart_orderby_2.html";
+                (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://codernotepad.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+              </script>
+            </div>
+
+
+        </div><!-- /.eleven.columns -->
+        
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="http://gpuoti.github.io/category/cpp.html">cpp</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/smart_ptr.html">smart_ptr</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/sort.html">sort</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/template.html">template</a></li>
+	    <li class="tag-1"><a href="http://gpuoti.github.io/tag/cpp.html">cpp</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/shared_ptr.html">shared_ptr</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://github.com/gpuoti">Github</a></li>
+    <li><a href="http://www.linkedin.com/pub/giuseppe-puoti/2b/b37/748">Linkedin</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+                <li><div class="btn primary"><a href="https://github.com/gpuoti" target="_blank">Github</a></div></li>
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'codernotepad';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  <script src="http://gpuoti.github.io/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://gpuoti.github.io/theme/js/libs/gumby.min.js"></script>
+  <script src="http://gpuoti.github.io/theme/js/plugins.js"></script>
+</body>
+</html>

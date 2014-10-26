@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>smart ordering definition</title>
+        <meta charset="utf-8" />
+        <link href="http://gpuoti.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Full Atom Feed" />
+        <link href="http://gpuoti.github.io/feeds/cpp.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/pygment.css" />
+
+        <script src="http://gpuoti.github.io/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="http://gpuoti.github.io">Coder Notepad <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="http://gpuoti.github.io">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://gpuoti.github.io/smart_order_by.html" rel="bookmark"
+                   title="Permalink to smart ordering definition">smart ordering definition</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2014-10-12T00:00:00">
+                dom 12 ottobre 2014
+              </abbr>
+              <address class="vcard author">
+                By <a class="url fn" href="http://gpuoti.github.io/author/giusepe-puoti.html">Giusepe Puoti</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>Recently I've realized i was not really improving my programming capabilities. Because i work with c++, it seeamed natural to me try to study some advanced concepts and techniques. At the end, if they pay me to do that, I'm supposed to have an advanced understanding or, at least, I should work hard to have it.
+These reasonings leaded me to buy a new book that could introduce me to the dark art of template metaprogramming.</p>
+<p>I've appreciated yet the Alessandrescu's way of write and explain so my book of choise was <em>Modern C++ Design: Generic Programming and Design Patterns Applied</em>. I really suggest you to buy it because it has been for me a wonderfull and it is slowly changing my approch to code.</p>
+<div class="section" id="the-first-very-usefull-pattern">
+<h2>the first very usefull pattern</h2>
+<p>One of the first patterns explained on that book is the Policy pattern.
+It is the static (or compile-time) version of the Strategy pattern.
+That is, it will let you extract some of the algorithm behavior to be selected not at runtime but in different code positions with minimal code effort. It is, in other word a way of write, in C++, higher order functions (functions that have other functions as their parameters).</p>
+</div>
+<div class="section" id="an-application">
+<h2>an application</h2>
+<p>Here i want to explain what I find a usefull application of this pattern in every day programming. I find it really usefull and I really &quot;discovered&quot; it in my every day work.</p>
+<p>Consider a situation in witch an object's list, can be ordered by its different properties. Here I'll consider a simple example with a class Person describing people by three properties:</p>
+<ul class="simple">
+<li>Name</li>
+<li>Surname</li>
+<li>age</li>
+</ul>
+<p>Here is the code:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span> <span class="p">{</span>
+        <span class="n">string</span> <span class="n">name</span><span class="p">,</span> <span class="n">surname</span> <span class="p">;</span>
+        <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+        <span class="n">Person</span><span class="p">(</span><span class="n">string</span> <span class="n">name</span><span class="p">,</span> <span class="n">string</span> <span class="n">surname</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">age</span><span class="p">){</span>
+                <span class="k">this</span><span class="o">-&gt;</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+                <span class="k">this</span><span class="o">-&gt;</span><span class="n">surname</span> <span class="o">=</span> <span class="n">surname</span><span class="p">;</span>
+                <span class="k">this</span><span class="o">-&gt;</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">string</span> <span class="n">toString</span><span class="p">(){</span>
+                <span class="n">stringstream</span> <span class="n">s</span><span class="p">;</span>
+                <span class="n">s</span> <span class="o">&lt;&lt;</span> <span class="n">name</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">surname</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; [age: &quot;</span><span class="o">&lt;&lt;</span> <span class="n">age</span> <span class="o">&lt;&lt;</span><span class="s">&quot;]&quot;</span><span class="p">;</span>
+                <span class="k">return</span> <span class="n">s</span><span class="p">.</span><span class="n">str</span><span class="p">();</span>
+        <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+<p>Suppose, some reason another, you want to order lists of people by different criteria in different part of you code, what I find a good solution is to implement some internal functor objects that implements different ordering functions.
+So, the Person class, it will enriched with:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span> <span class="p">{</span>
+        <span class="p">...</span>
+<span class="nl">public:</span>
+        <span class="k">struct</span> <span class="n">OrderByName</span> <span class="p">{</span>
+                <span class="kt">bool</span> <span class="k">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">p1</span><span class="p">,</span> <span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">p2</span><span class="p">){</span>
+                        <span class="k">return</span> <span class="n">p1</span><span class="p">.</span><span class="n">name</span> <span class="o">&lt;</span> <span class="n">p2</span><span class="p">.</span><span class="n">name</span><span class="p">;</span>
+                <span class="p">}</span>
+        <span class="p">};</span>
+
+        <span class="k">struct</span> <span class="n">OrderBySurname</span> <span class="p">{</span>
+                <span class="kt">bool</span> <span class="k">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">p1</span><span class="p">,</span> <span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">p2</span><span class="p">){</span>
+                        <span class="k">return</span> <span class="n">p1</span><span class="p">.</span><span class="n">surname</span> <span class="o">&lt;</span> <span class="n">p2</span><span class="p">.</span><span class="n">surname</span><span class="p">;</span>
+                <span class="p">}</span>
+        <span class="p">};</span>
+
+        <span class="k">struct</span> <span class="n">OrderByAge</span> <span class="p">{</span>
+                <span class="kt">bool</span> <span class="k">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">p1</span><span class="p">,</span> <span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">p2</span><span class="p">){</span>
+                        <span class="k">return</span> <span class="n">p1</span><span class="p">.</span><span class="n">age</span> <span class="o">&lt;</span> <span class="n">p2</span><span class="p">.</span><span class="n">age</span><span class="p">;</span>
+                <span class="p">}</span>
+        <span class="p">};</span>
+
+        <span class="p">...</span>
+<span class="p">};</span>
+</pre></div>
+<p>At this point you can sort (or operate on them in some other way requiring an ordering function) Person objects like this:</p>
+<div class="highlight"><pre><span class="n">vector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span> <span class="n">people</span><span class="p">;</span>
+<span class="n">people</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Jill&quot;</span><span class="p">,</span> <span class="s">&quot;Evans&quot;</span><span class="p">,</span> <span class="mi">29</span><span class="p">));</span>
+<span class="n">people</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Jill&quot;</span><span class="p">,</span> <span class="s">&quot;Evans&quot;</span><span class="p">,</span> <span class="mi">23</span><span class="p">));</span>
+<span class="n">people</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Jill&quot;</span><span class="p">,</span> <span class="s">&quot;Doe&quot;</span><span class="p">,</span> <span class="mi">31</span><span class="p">));</span>
+<span class="n">people</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Joe&quot;</span><span class="p">,</span> <span class="s">&quot;Doe&quot;</span><span class="p">,</span> <span class="mi">34</span><span class="p">));</span>
+<span class="n">people</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Alan&quot;</span><span class="p">,</span>  <span class="s">&quot;Doe&quot;</span><span class="p">,</span> <span class="mi">68</span><span class="p">));</span>
+
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Original dataset: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">people</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">){</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">people</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">toString</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Ordering by surnames...&quot;</span><span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="n">sort</span><span class="p">(</span><span class="n">people</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">people</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">Person</span><span class="o">::</span><span class="n">OrderBySurname</span><span class="p">());</span>
+
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Ordered dataset:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">people</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">){</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">people</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">toString</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>to obtain this result:</p>
+<pre class="literal-block">
+Original dataset:
+Jill Evans [age: 29]
+Jill Evans [age: 23]
+Jill Doe [age: 31]
+Joe Doe [age: 34]
+Alan Doe [age: 68]
+
+Ordering by surnames...
+Ordered dataset:
+Jill Doe [age: 31]
+Joe Doe [age: 34]
+Alan Doe [age: 68]
+Jill Evans [age: 29]
+Jill Evans [age: 23]
+</pre>
+<p>In a real world situation this is not a so good way of order list of people, you' ll be probably required to refine the sorting using a different and more complex ordering that will list Alan before Jill and Joe Doe. You could follow the naive approch and write more and more ordering functors but they will multiplicate exponentially so that, simply give that criteria a name, can be quite a complex issue.
+You could have:</p>
+<ul class="simple">
+<li>OrderBySurnameAndThenName</li>
+<li>OrderBySurnameAndThenAge</li>
+<li>OrderByAgeAndThenSurname</li>
+</ul>
+<p>This solution is not that well, here I'll propose something more beautifull.</p>
+</div>
+<div class="section" id="the-smartorderby-solution">
+<h2>The SmartOrderBy solution</h2>
+<p>The solution I want to propose require the writing of an ordering functor whose only purpose is to combine two other ordering functor types.</p>
+<p>So, <em>SmartOrderBy</em> is a functor type that depends on two other functor types that evaluates to true if the first object is less then the second when considering the first functor or, if they are equal for the first, the first object is less then the second when considering the second ordering functor.</p>
+<p>Consider for example you want to order a list of people by their surname and, in case of same surname, by their name. You could write just another functor OrderBySurnameAndName or use <em>SmartOrderBy</em> like in the following exaple:</p>
+<div class="highlight"><pre><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Ordering by surnames then names...&quot;</span><span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="n">sort</span><span class="p">(</span><span class="n">people</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">people</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">SmartOrderBy</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">::</span><span class="n">OrderBySurname</span><span class="p">,</span> <span class="n">Person</span><span class="o">::</span><span class="n">OrderByName</span><span class="o">&gt;</span><span class="p">());</span>
+
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Ordered dataset:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">people</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">){</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">people</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">toString</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>this will write:</p>
+<pre class="literal-block">
+Ordering by surnames then names...
+Ordered dataset:
+Alan Doe [age: 68]
+Jill Doe [age: 31]
+Joe Doe [age: 34]
+Jill Evans [age: 29]
+Jill Evans [age: 23]
+</pre>
+<p>Of course you may want to see the <em>SmartOrderBy</em> definition, and here is how it looks like:</p>
+<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Ord1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">Ord2</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">SmartOrderBy</span><span class="p">{</span>
+<span class="nl">private:</span>
+        <span class="n">Ord1</span> <span class="n">o1</span><span class="p">;</span>
+        <span class="n">Ord2</span> <span class="n">o2</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+        <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">Obj</span><span class="o">&gt;</span>
+        <span class="kt">bool</span> <span class="k">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">Obj</span><span class="o">&amp;</span> <span class="n">obj1</span><span class="p">,</span> <span class="k">const</span> <span class="n">Obj</span><span class="o">&amp;</span> <span class="n">obj2</span><span class="p">){</span>
+                <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">o1</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">o1</span><span class="p">(</span><span class="n">obj2</span><span class="p">,</span> <span class="n">obj1</span><span class="p">)</span> <span class="p">){</span>
+                        <span class="k">return</span> <span class="n">o2</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">return</span> <span class="n">o1</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">);</span>
+        <span class="p">}</span>
+
+
+
+<span class="p">};</span>
+</pre></div>
+<p>The template parameters <em>Ord1</em> and <em>Ord2</em> are the component ordering functor types. In this simple example they must be default constructable but different semantics can be implemented refinig the implementation. For example it is possible to arrange thinks so that component functors are created (and initialized) by the callee.
+The <em>operator()</em> is a template method itself so that the resulting functor may be applied to any object the component functors can both operate on.</p>
+<p>I've used a little trick to not require the specification of equality operator corresponding to each of the functors:</p>
+<p>Consider o1 as ordering functor we can write:</p>
+<blockquote>
+<em>not (obj1 &lt; obj2)</em> equals to <em>obj1 &gt;= obj2</em></blockquote>
+<p>and, obviously:</p>
+<blockquote>
+if <em>obj1 &gt;= obj2</em> and <em>obj2 &gt;= obj1</em> then <em>obj1 == obj2</em>.</blockquote>
+<p>SmartOrderBy template instantiation may be a component functor type itself so that you can sort a list of people by their surnames and then, in case of same surname by their names and then, in case of same name and surname, by their age, as follow:</p>
+<div class="highlight"><pre><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Ordering by surnames then names then age...&quot;</span><span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="n">SmartOrderBy</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">::</span><span class="n">OrderBySurname</span><span class="p">,</span> <span class="n">Person</span><span class="o">::</span><span class="n">OrderByName</span><span class="o">&gt;</span> <span class="n">OrderByName</span><span class="p">;</span>          <span class="c1">// a temporary shortcut</span>
+<span class="n">sort</span><span class="p">(</span><span class="n">people</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">people</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">SmartOrderBy</span><span class="o">&lt;</span><span class="n">OrderByName</span><span class="p">,</span> <span class="n">Person</span><span class="o">::</span><span class="n">OrderByAge</span><span class="o">&gt;</span><span class="p">());</span>
+
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Ordered dataset:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">people</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">){</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">people</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">toString</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>and obtain:</p>
+<pre class="literal-block">
+Ordering by surnames then names then age...
+Ordered dataset:
+Alan Doe [age: 68]
+Jill Doe [age: 31]
+Joe Doe [age: 34]
+Jill Evans [age: 23]
+Jill Evans [age: 29]
+</pre>
+<p>The wonderfull think of this approch is that, if you need to order in a slightly different way, for example by age and then by surname and then by name you can implement it as simple as:</p>
+<div class="highlight"><pre><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Ordering by age then surnames then names...&quot;</span><span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="n">SmartOrderBy</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">::</span><span class="n">OrderBySurname</span><span class="p">,</span> <span class="n">Person</span><span class="o">::</span><span class="n">OrderByName</span><span class="o">&gt;</span> <span class="n">OrderByName</span><span class="p">;</span>          <span class="c1">// a temporary shortcut</span>
+<span class="n">sort</span><span class="p">(</span><span class="n">people</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">people</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">SmartOrderBy</span><span class="o">&lt;*</span><span class="n">Person</span><span class="o">::</span><span class="n">OrderByAge</span><span class="p">,</span> <span class="n">OrderByName</span><span class="o">*&gt;</span><span class="p">());</span>
+
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Ordered dataset:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">people</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">){</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">people</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">toString</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>I've just swapped the two component ordering functors!</p>
+</div>
+<div class="section" id="more-to-come">
+<h2>More to come</h2>
+<p>Hope you'll find this usefull, I want to close this article here to not overcharge it, but here come a quite natural question, what if we old the list of objects (people) as a list of pointers, can we still use this approch? I'll write some more on the argument soon, stay tuned!</p>
+</div>
+
+            </div><!-- /.entry-content -->
+            <div class="comments">
+              <h3>Comments</h3>
+              <div id="disqus_thread"></div>
+              <script type="text/javascript">
+                var disqus_identifier = "smart_order_by.html";
+                (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://codernotepad.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+              </script>
+            </div>
+
+
+        </div><!-- /.eleven.columns -->
+        
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="http://gpuoti.github.io/category/cpp.html">cpp</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/smart_ptr.html">smart_ptr</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/sort.html">sort</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/template.html">template</a></li>
+	    <li class="tag-1"><a href="http://gpuoti.github.io/tag/cpp.html">cpp</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/shared_ptr.html">shared_ptr</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://github.com/gpuoti">Github</a></li>
+    <li><a href="http://www.linkedin.com/pub/giuseppe-puoti/2b/b37/748">Linkedin</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+                <li><div class="btn primary"><a href="https://github.com/gpuoti" target="_blank">Github</a></div></li>
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'codernotepad';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  <script src="http://gpuoti.github.io/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://gpuoti.github.io/theme/js/libs/gumby.min.js"></script>
+  <script src="http://gpuoti.github.io/theme/js/plugins.js"></script>
+</body>
+</html>
