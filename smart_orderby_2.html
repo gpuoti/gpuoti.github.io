@@ -62,7 +62,7 @@
                 dom 26 ottobre 2014
               </abbr>
               <address class="vcard author">
-                By <a class="url fn" href="http://gpuoti.github.io/author/giusepe-puoti.html">Giusepe Puoti</a>
+                By <a class="url fn" href="http://gpuoti.github.io/author/giuseppe-puoti.html">Giuseppe Puoti</a>
               </address>
             </footer><!-- /.post-info -->
             <div class="entry-content">
@@ -114,8 +114,15 @@ What I had in mind closing the article was about situations where containers act
 <span class="p">};</span>
 </pre></div>
 <p>This will not work well because when we call the <em>operator()</em> using pointers as parameters, the compiler create an implementation of the first <em>operator()</em> with <em>Obj = Person*</em> so that the pointer to reference conversion do not take place.</p>
-<p>What I've written in the example above is not really an overload, to write one the two <em>operator()</em> must have a common understanding of the template parameter <em>Obj</em> so, I should move that to struct level writing:</p>
-<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Ord1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">Ord2</span><span class="p">,</span> <span class="k">typename</span> <span class="n">Obj</span><span class="o">&gt;</span>
+<p>At first time i thought what i wrote was no really an overload because of the not common understanding of the type parameter. As someone noticed on a reddit comment, I was wrong. The compiler actually generate <em>operator()</em> as an overloaded function but, because my test code used a container filled with <em>non const</em> Person pointers it preferes:</p>
+<blockquote>
+<p>operator()(Person* const&amp;, Person* const&amp;)</p>
+<p><em>over</em></p>
+<p>operator()(const Person*, const Person*)</p>
+</blockquote>
+<p>because of the conversion to const pointer.
+Writing the pointer version as non const seems to solve. Even in case you use a container containing const pointer to object because, in this case the compiler yield a version of the operator using, for example, Obj = const Person*</p>
+<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Ord1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">Ord2</span><span class="o">&gt;</span>
 <span class="k">struct</span> <span class="n">SmartOrderBy</span><span class="p">{</span>
 <span class="nl">private:</span>
         <span class="n">Ord1</span> <span class="n">o1</span><span class="p">;</span>
@@ -123,38 +130,21 @@ What I had in mind closing the article was about situations where containers act
 
 <span class="nl">public:</span>
 
-        <span class="kt">bool</span> <span class="nf">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">Obj</span><span class="o">&amp;</span> <span class="n">obj1</span><span class="p">,</span> <span class="k">const</span> <span class="n">Obj</span><span class="o">&amp;</span> <span class="n">obj2</span><span class="p">){</span>
+        <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">Obj</span><span class="o">&gt;</span>
+        <span class="kt">bool</span> <span class="k">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">Obj</span><span class="o">&amp;</span> <span class="n">obj1</span><span class="p">,</span> <span class="k">const</span> <span class="n">Obj</span><span class="o">&amp;</span> <span class="n">obj2</span><span class="p">){</span>
                 <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">o1</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">o1</span><span class="p">(</span><span class="n">obj2</span><span class="p">,</span> <span class="n">obj1</span><span class="p">)</span> <span class="p">){</span>
                         <span class="k">return</span> <span class="n">o2</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">);</span>
                 <span class="p">}</span>
                 <span class="k">return</span> <span class="n">o1</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">);</span>
         <span class="p">}</span>
 
-        <span class="kt">bool</span> <span class="nf">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">Obj</span><span class="o">*</span> <span class="n">pObj1</span><span class="p">,</span>  <span class="k">const</span> <span class="n">Obj</span><span class="o">*</span> <span class="n">pObj2</span><span class="p">){</span>
-                <span class="k">const</span> <span class="n">Obj</span><span class="o">&amp;</span> <span class="n">obj1</span> <span class="o">=</span> <span class="o">*</span><span class="n">pObj1</span><span class="p">;</span>
-                <span class="k">const</span> <span class="n">Obj</span><span class="o">&amp;</span> <span class="n">obj2</span> <span class="o">=</span> <span class="o">*</span><span class="n">pObj2</span><span class="p">;</span>
-
-                <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">o1</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">o1</span><span class="p">(</span><span class="n">obj2</span><span class="p">,</span> <span class="n">obj1</span><span class="p">)</span> <span class="p">){</span>
-                        <span class="k">return</span> <span class="n">o2</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">);</span>
-                <span class="p">}</span>
-                <span class="k">return</span> <span class="n">o1</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">);</span>
+        <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">Obj</span><span class="o">&gt;</span>
+        <span class="kt">bool</span> <span class="k">operator</span><span class="p">()</span> <span class="p">(</span><span class="n">Obj</span><span class="o">*</span> <span class="n">pObj1</span><span class="p">,</span>  <span class="n">Obj</span><span class="o">*</span> <span class="n">pObj2</span><span class="p">){</span>
+                <span class="k">return</span> <span class="k">operator</span><span class="p">()(</span><span class="o">*</span><span class="n">pObj1</span><span class="p">,</span> <span class="o">*</span><span class="n">pObj2</span><span class="p">);</span>
         <span class="p">}</span>
 <span class="p">};</span>
-
-<span class="kt">void</span> <span class="nf">main</span><span class="p">(){</span>
-        <span class="n">vector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">*&gt;</span> <span class="n">people</span><span class="p">;</span>
-        <span class="p">...</span>
-
-        <span class="n">sort</span><span class="p">(</span> \
-                <span class="n">people</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> \
-                <span class="n">people</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span>   \
-                <span class="n">SmartOrderBy</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">::</span><span class="n">OrderBySurname</span><span class="p">,</span> <span class="n">Person</span><span class="o">::</span><span class="n">OrderByName</span><span class="p">,</span> <span class="n">Person</span><span class="o">&gt;</span><span class="p">()</span>     \
-        <span class="p">);</span>
-<span class="p">}</span>
-
-
-<span class="n">This</span> <span class="n">works</span> <span class="n">but</span> <span class="n">you</span> <span class="n">have</span> <span class="n">to</span> <span class="n">explicitly</span> <span class="n">specify</span> <span class="n">you</span> <span class="n">are</span> <span class="n">instantiating</span> <span class="n">an</span> <span class="n">ordering</span> <span class="n">on</span> <span class="o">*</span><span class="n">Person</span><span class="o">*</span> <span class="n">objects</span> <span class="n">and</span><span class="p">,</span> <span class="k">if</span> <span class="n">you</span> <span class="n">are</span> <span class="n">nesting</span> <span class="n">one</span> <span class="n">SmartOrderBy</span> <span class="n">into</span> <span class="n">another</span> <span class="k">this</span> <span class="n">apply</span> <span class="n">to</span> <span class="n">all</span> <span class="k">template</span> <span class="n">instantiation</span><span class="p">.</span> <span class="n">It</span> <span class="n">may</span> <span class="n">be</span> <span class="n">quite</span> <span class="n">verbose</span><span class="p">.</span> <span class="n">Of</span> <span class="n">course</span> <span class="n">typedefs</span> <span class="n">can</span> <span class="n">come</span> <span class="n">to</span> <span class="n">rescue</span><span class="p">.</span>
 </pre></div>
+<p>The correction (and appreciated lesson) I've received on reddit, makes this solution quite attractive to me. It is simple to implement and to use with practically no verbosity overhead.</p>
 </div>
 <div class="section" id="another-possible-solution">
 <h2>another possible solution</h2>
@@ -188,7 +178,7 @@ In case of nesting SmartOrderBy functors, there is no additional verbosity cost,
 </div>
 <div class="section" id="conclusions">
 <h2>conclusions</h2>
-<p>I find this last option a good one, I'm sure there is some better one, but them are probably outside my current capacity. Hope this will help you to better understand template meta-programming and find its convenient everyday programming use.</p>
+<p>I find this last option also a good one, I know there is also some better one, but them are probably outside my current capacity. Will try to implement another solution based on tag dispatch based on pointerness as suggested by comments on reddit.   Hope this will help you to better understand template meta-programming and find its convenient everyday programming use.</p>
 </div>
 
             </div><!-- /.entry-content -->
@@ -223,11 +213,11 @@ In case of nesting SmartOrderBy functors, there is no additional verbosity cost,
 
 <h4>Tags</h4>
 	<ul>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/smart_ptr.html">smart_ptr</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/sort.html">sort</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/template.html">template</a></li>
 	    <li class="tag-1"><a href="http://gpuoti.github.io/tag/cpp.html">cpp</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/template.html">template</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/smart_ptr.html">smart_ptr</a></li>
 	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/shared_ptr.html">shared_ptr</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/sort.html">sort</a></li>
 </ul>
 
 
