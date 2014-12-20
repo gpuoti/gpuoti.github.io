@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>A convenient approch for feature extractor</title>
+        <meta charset="utf-8" />
+        <link href="http://gpuoti.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Full Atom Feed" />
+        <link href="http://gpuoti.github.io/feeds/cpp.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/pygment.css" />
+
+        <script src="http://gpuoti.github.io/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+              <script>
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-56135244-1', 'codernotepad');
+                ga('send', 'pageview');
+
+              </script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="http://gpuoti.github.io">Coder Notepad <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="http://gpuoti.github.io">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://gpuoti.github.io/feature_extractor.html" rel="bookmark"
+                   title="Permalink to A convenient approch for feature extractor">A convenient approch for feature extractor</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2014-12-14T00:00:00">
+                dom 14 dicembre 2014
+              </abbr>
+              <address class="vcard author">
+                By <a class="url fn" href="http://gpuoti.github.io/author/giuseppe-puoti.html">Giuseppe Puoti</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>When I've start seriously using STL algorithms, I suddenly realized how much I miss a way to define anonymous class or functions.
+For example, it is a quite common need to run an STL algorithm based on some of the prooperty of object a container is holding. In this case, you should have defined an unarary functor for each of the ordering methods and, of couse, every time you need another, another functor shall be written.</p>
+<p>Lambda functions have beed introduced in C++11 and i find that a conveniente and expressive solution but still you could not use C++11 (as I do) or you may want to not repeat yourself each time you call an STL algorithm to specify the functor to use as a lambda.</p>
+<p>I've written some article using ordering as my use case but, as the helper infrastructure I'm going to describe apply in many different cases, this time I'll use a search use case.</p>
+<p>Consider a situation with a container filled with a number of objects of type A defined as:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+  <span class="n">string</span> <span class="n">s</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+  <span class="n">A</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">string</span> <span class="n">s</span><span class="p">){</span>
+    <span class="k">this</span><span class="o">-&gt;</span><span class="n">i</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+    <span class="k">this</span><span class="o">-&gt;</span><span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">string</span> <span class="n">getName</span>  <span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">s</span><span class="p">;</span> <span class="p">}</span>
+  <span class="kt">void</span> <span class="n">setName</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">){</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="kt">int</span> <span class="n">getID</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">i</span><span class="p">;</span> <span class="p">}</span>
+  <span class="kt">void</span> <span class="n">setID</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">){</span> <span class="n">i</span> <span class="o">=</span> <span class="n">n</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]){</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">;</span>
+
+  <span class="n">A</span> <span class="n">a</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&quot;foo&quot;</span><span class="p">);</span>
+  <span class="n">A</span> <span class="n">b</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s">&quot;bar&quot;</span><span class="p">);</span>
+  <span class="n">A</span> <span class="n">c</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&quot;foo&quot;</span><span class="p">);</span>
+
+  <span class="n">v</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+  <span class="n">v</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+  <span class="n">v</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+  <span class="p">...</span>
+</pre></div>
+<p>What if you want to find the first element in <em>v</em> whose name is <em>foo</em> ?</p>
+<div class="section" id="my-naive-default-approch">
+<h2>My naive default approch</h2>
+<p>My naive approch are actually two depending of the generality of the equality criteria I'm about to implement.
+If the criteria is common enough, I can expand the A class with an inner class defining the equality criteria such as:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
+
+  <span class="p">...</span>
+
+  <span class="nl">public:</span>
+      <span class="k">struct</span> <span class="n">EqualName</span> <span class="p">{</span>
+
+        <span class="n">EqualName</span><span class="p">(</span><span class="n">string</span> <span class="n">target</span><span class="p">){</span>
+          <span class="n">t</span> <span class="o">=</span> <span class="n">target</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">bool</span> <span class="k">operator</span><span class="p">()</span> <span class="p">(</span><span class="n">A</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">){</span>
+          <span class="k">return</span> <span class="n">a</span><span class="p">.</span><span class="n">getName</span><span class="p">()</span> <span class="o">==</span> <span class="n">t</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nl">private:</span>
+          <span class="n">string</span> <span class="n">t</span><span class="p">;</span>
+      <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]){</span>
+  <span class="p">...</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">x</span> <span class="o">=</span> <span class="n">find_if</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">A</span><span class="o">::</span><span class="n">EqualName</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">)</span> <span class="p">);</span>
+
+  <span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;not found&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+<p>If the criteria is less common and think I'll not use it in other places, I write the struct locally, for example in the main function.</p>
+<p>To be honest I dislike this solutions, thinking they are good only to manage much more particular property matching. So I've spent some time to find a better solution to better use the fact that my match is simply based on an object property.</p>
+</div>
+<div class="section" id="a-better-approch">
+<h2>A better approch</h2>
+<div class="section" id="what-stl-requires">
+<h3>What STL requires</h3>
+<p>In the example, but this apply to much more algorithms say, for example, <em>std::copy_if</em> or the definition of <em>std:set</em>, what STL requires is a:</p>
+<blockquote>
+<ul class="simple">
+<li>Range on a container like object (ok I've it!)</li>
+<li>Boolean functor (or even a simple function) on the elements of the container.</li>
+</ul>
+</blockquote>
+<div class="figure">
+<img alt="" src="imgs/prop_1.png" style="width: 50%;" />
+<p class="caption">Here is a schematization of what find_if behaves, highlighted in blue the matcher functor we must provide.</p>
+</div>
+<p>I've implemented it with the naive approch but I could have noticed something extra. I mean, to provide a matcher functor to check the property what I need is just something able to extract the property and proxy the operation.
+And this is what the functor implemented with the naive approch is: it is a function that:</p>
+<blockquote>
+<ol class="arabic simple">
+<li>extract the name property</li>
+<li>compare the result with the target</li>
+</ol>
+</blockquote>
+<p>If you name:</p>
+<blockquote>
+<dl class="docutils">
+<dt>n</dt>
+<dd>the method that extract the name from the A object</dd>
+<dt>eq</dt>
+<dd>the compare operation on strings</dd>
+</dl>
+</blockquote>
+<p>what the naive approch implement is a composition of n and eq fixing a second string for the comparator.</p>
+<div class="figure">
+<img alt="" src="imgs/prop_2.png" style="width: 45%;" />
+<p class="caption">Here is a schematization of what the naive approch is</p>
+</div>
+<p>A better approch would be write a matcher functor parametrized on the kind of preprocessing to apply before the actual compatation. In better terms what i'd like is: a matcher functor that can adapt its input before doing its compare operation.</p>
+<p>Even better, the operation on adapted value itself can be parametrized so that it could be an equality or a ordering or something else.
+So, the matcher I'm about to write shall:</p>
+<blockquote>
+<ul class="simple">
+<li>Adapt its input by a user defined adaptor</li>
+<li>Fix a target property value</li>
+<li>Use the adaptor result and the fixed property value to feed user defined existing operation.</li>
+</ul>
+</blockquote>
+<p>I've named this functor <em>Has</em> because it checks if an object has a particular property value. The picture below try to depict what <em>Has</em> schematically looks like.</p>
+<div class="figure">
+<img alt="" src="imgs/prop_3.png" style="width: 45%;" />
+<p class="caption">The <em>Has</em> functor schematically. Red circles are template functions.</p>
+</div>
+<p>And here is the code, it is quite simple too!</p>
+<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">OP</span><span class="p">,</span> <span class="k">typename</span> <span class="n">AdaptorT</span><span class="p">,</span> <span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">Has</span><span class="p">{</span>
+  <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">t</span><span class="p">;</span>
+  <span class="n">AdaptorT</span><span class="o">&amp;</span> <span class="n">adapt</span><span class="p">;</span>
+  <span class="k">const</span> <span class="n">OP</span><span class="o">&amp;</span> <span class="n">op</span><span class="p">;</span>
+
+  <span class="n">Has</span><span class="p">(</span><span class="k">const</span> <span class="n">OP</span><span class="o">&amp;</span> <span class="n">oper</span><span class="p">,</span> <span class="n">AdaptorT</span><span class="o">&amp;</span> <span class="n">adaptor</span><span class="p">,</span> <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">target</span><span class="p">)</span> <span class="o">:</span> <span class="n">op</span><span class="p">(</span><span class="n">oper</span><span class="p">),</span> <span class="n">t</span><span class="p">(</span><span class="n">target</span><span class="p">),</span> <span class="n">adapt</span><span class="p">(</span><span class="n">adaptor</span><span class="p">){</span>
+  <span class="p">}</span>
+
+  <span class="n">Has</span><span class="p">(</span><span class="k">const</span> <span class="n">Has</span><span class="o">&lt;</span><span class="n">OP</span><span class="p">,</span> <span class="n">AdaptorT</span><span class="p">,</span> <span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">other</span><span class="p">)</span><span class="o">:</span> <span class="n">op</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">op</span><span class="p">),</span> <span class="n">t</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">t</span><span class="p">),</span> <span class="n">adapt</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">adapt</span><span class="p">){</span>
+  <span class="p">}</span>
+
+  <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">ObjT</span><span class="o">&gt;</span>
+  <span class="kt">bool</span> <span class="k">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">ObjT</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="n">T</span> <span class="n">x</span> <span class="o">=</span> <span class="n">adapt</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="nf">op</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">R</span><span class="p">,</span> <span class="k">typename</span> <span class="n">AdaptorT</span><span class="p">,</span> <span class="k">typename</span> <span class="n">OP</span><span class="o">&gt;</span>
+<span class="n">Has</span><span class="o">&lt;</span> <span class="n">OP</span><span class="p">,</span> <span class="n">AdaptorT</span><span class="p">,</span> <span class="n">R</span><span class="o">&gt;</span> <span class="n">has</span><span class="p">(</span> <span class="n">AdaptorT</span><span class="o">&amp;</span> <span class="n">adaptor</span><span class="p">,</span> <span class="k">const</span> <span class="n">OP</span><span class="o">&amp;</span> <span class="n">op</span><span class="p">,</span> <span class="k">const</span> <span class="n">R</span><span class="o">&amp;</span> <span class="n">target</span><span class="p">){</span>
+  <span class="k">return</span> <span class="n">Has</span><span class="o">&lt;</span> <span class="n">OP</span><span class="p">,</span> <span class="n">AdaptorT</span><span class="p">,</span> <span class="n">R</span><span class="o">&gt;</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">adaptor</span><span class="p">,</span> <span class="n">target</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+<p>The additional template function is in place only to not specify all template parameters every each time you need to create a matcher object.
+Say you have a functor that retrieve the name from A objects using the <em>A::getName</em> method, to find objects named <em>foo</em> you can write something like:</p>
+<div class="highlight"><pre><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]){</span>
+
+  <span class="p">...</span>
+
+  <span class="k">struct</span> <span class="n">NameExtractor</span> <span class="p">{</span>
+    <span class="n">string</span> <span class="k">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">A</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">){</span>
+      <span class="k">return</span> <span class="n">a</span><span class="p">.</span><span class="n">getName</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">x</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">find_if</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">has</span><span class="p">(</span><span class="n">NameExtractor</span><span class="p">(),</span> <span class="n">std</span><span class="o">::</span><span class="n">equal_to</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(),</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">)));</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="not-enough">
+<h3>Not enough</h3>
+<p>As I'm a lazy programmer, <em>Has</em> itself is still not enough. In fact it require to write an attribute extractor for every attribute you want to adapt to.
+What we still need is a way to automatically implement that kind of adaptors. If you was thinking to preprocessor macro, forget it, i'm not going to use macro as a morre expressive and safer solution is available using template metaprogramming.</p>
+<p>What I'm going to write is a template functor that will use any method to create and adaptor of the object on witch the method is defined to the type of the method return value.</p>
+<p>I called this adaptor generator <em>Prop</em> because it extract properties and here is how it looks like.</p>
+<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">R</span><span class="p">,</span> <span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="n">R</span> <span class="p">(</span><span class="n">T</span><span class="o">::*</span><span class="n">getMethod</span><span class="p">)</span> <span class="p">()</span> <span class="k">const</span> <span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">Prop</span> <span class="p">{</span>
+
+  <span class="n">R</span> <span class="k">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">o</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="o">*</span><span class="n">getMethod</span><span class="p">)();</span>
+  <span class="p">}</span>
+
+<span class="p">};</span>
+</pre></div>
+<p>The template parameters representes:</p>
+<blockquote>
+<dl class="docutils">
+<dt>R</dt>
+<dd>the return type of the method we want to use as an adaptor. That is the type we want to obtain as the adaption result.</dd>
+<dt>T</dt>
+<dd>the type of object we want to adapt</dd>
+<dt>R (T::*getMethod) () const</dt>
+<dd>the method of T we want to use as an adaptor. Of course it must return an R and accept empty parameter list.</dd>
+</dl>
+</blockquote>
+<p>Once we have <em>Prop</em> in place, it makes really simple to write again the initial find operation like:</p>
+<div class="highlight"><pre><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]){</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">;</span>
+  <span class="n">A</span> <span class="n">a</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&quot;bar&quot;</span><span class="p">);</span>
+  <span class="n">A</span> <span class="n">b</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s">&quot;foo&quot;</span><span class="p">);</span>
+  <span class="n">A</span> <span class="n">c</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&quot;foo&quot;</span><span class="p">);</span>
+
+  <span class="n">v</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+  <span class="n">v</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+  <span class="n">v</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+
+  <span class="k">typedef</span> <span class="n">Prop</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">getName</span><span class="o">&gt;</span> <span class="n">NameRetrieverT</span><span class="p">;</span>
+  <span class="n">NameRetrieverT</span> <span class="n">name</span><span class="p">;</span>
+
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">x</span> <span class="o">=</span> <span class="n">find_if</span><span class="p">(</span>
+    <span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span>
+    <span class="n">has</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">equal_to</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(),</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">)</span> <span class="p">)</span>
+  <span class="p">);</span>
+
+  <span class="k">return</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+<p>Apart from the expressiveness of the result it is simply reusable. Say, for example you want the first A with ID 7. All you must say to the compiler is that you want to use a different method:</p>
+<div class="highlight"><pre><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]){</span>
+
+  <span class="p">...</span>
+
+  <span class="k">typedef</span> <span class="n">Prop</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">getID</span><span class="o">&gt;</span> <span class="n">IDRetrieverT</span><span class="p">;</span>
+  <span class="n">IDRetrieverT</span> <span class="n">id</span><span class="p">;</span>
+
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">x</span> <span class="o">=</span> <span class="n">find_if</span><span class="p">(</span>
+    <span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span>
+    <span class="n">has</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">equal_to</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)</span>
+  <span class="p">);</span>
+
+  <span class="k">return</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+
+<span class="p">}</span>
+</pre></div>
+<p>Even better you can change the evaluation criteria of the property. For example one may want to search for the first object that has its name lexicographically minor to <em>foo</em>. Here is how you can simly code it once the <em>has</em> function and the property extractor template adaptor are in place:</p>
+<div class="highlight"><pre>  ...
+
+  typedef Prop&lt;string, A, &amp;A::getName&gt; NameRetrieverT;
+  NameRetrieverT name;
+
+  vector&lt;A&gt;::const_iterator x = find_if(
+    v.begin(), v.end(),
+    has(name, less&lt;string&gt;(), string(&quot;foo&quot;)
+  );
+
+  return x != v.end();
+
+}
+</pre></div>
+<p>Even if I'm not inventing nothing so new to real guru, I hope that this article can explain something new to programmers that want to learn use C++ at its full power like I am.</p>
+</div>
+</div>
+
+            </div><!-- /.entry-content -->
+            <div class="comments">
+              <h3>Comments</h3>
+              <div id="disqus_thread"></div>
+              <script type="text/javascript">
+                var disqus_identifier = "feature_extractor.html";
+                (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://codernotepad.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+              </script>
+            </div>
+
+
+        </div><!-- /.eleven.columns -->
+        
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="http://gpuoti.github.io/category/cpp.html">cpp</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/functional.html">functional</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/shared_ptr.html">shared_ptr</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/sort.html">sort</a></li>
+	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/stl.html">stl</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/smart_ptr.html">smart_ptr</a></li>
+	    <li class="tag-0"><a href="http://gpuoti.github.io/tag/cpp.html">cpp</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/template.html">template</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://github.com/gpuoti">Github</a></li>
+    <li><a href="http://www.linkedin.com/pub/giuseppe-puoti/2b/b37/748">Linkedin</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+                <li><div class="btn primary"><a href="https://github.com/gpuoti" target="_blank">Github</a></div></li>
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'codernotepad';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  <script src="http://gpuoti.github.io/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://gpuoti.github.io/theme/js/libs/gumby.min.js"></script>
+  <script src="http://gpuoti.github.io/theme/js/plugins.js"></script>
+</body>
+</html>
