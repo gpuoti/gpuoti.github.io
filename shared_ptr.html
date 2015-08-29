@@ -30,8 +30,6 @@
               </script>
 
 
-
-
 </head>
 
 <body id="index" class="home">
@@ -42,15 +40,16 @@
         <div class="row">
 
           <header id="banner" class="body">
-                  <h1><a href="http://gpuoti.github.io">Coder Notepad <strong></strong></a></h1>
+                  <h1><a href="http://gpuoti.github.io/">Coder Notepad <strong></strong></a></h1>
           </header><!-- /#banner -->
 
             <div id="navigation" class="navbar row">
               <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
              
               <ul class="columns">
-                <li><a href="http://gpuoti.github.io">Home</a></li>
+                <li><a href="http://gpuoti.github.io/">Home</a></li>
 
+                <li><a href="http://gpuoti.github.io/pages/resume.html">Resume</a></li>
 
               </ul>
             </div>
@@ -68,11 +67,11 @@
            
             </header>
             <footer class="post-info">
-              <abbr class="published" title="2014-03-03T00:00:00">
+              <abbr class="published" title="2014-03-03T00:00:00+01:00">
                 lun 03 marzo 2014
               </abbr>
-              <address class="vcard author">
-                By <a class="url fn" href="http://gpuoti.github.io/author/giuseppe-puoti.html">Giuseppe Puoti</a>
+              <address class="vcard author">By 
+                <a class="url fn" href="http://gpuoti.github.io/author/giuseppe-puoti.html"> Giuseppe Puoti</a>
               </address>
             </footer><!-- /.post-info -->
             <div class="entry-content">
@@ -132,7 +131,7 @@ This is clearly a template class, i called it <em>Smart</em>:</p>
     <span class="k">class</span> <span class="nc">Smart</span> <span class="p">{</span>
     <span class="k">static</span> <span class="n">map</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">counters</span><span class="p">;</span>
 
-<span class="nl">private:</span>
+<span class="k">private</span><span class="o">:</span>
     <span class="k">typedef</span> <span class="n">T</span> <span class="n">wrappedType</span><span class="p">;</span>
     <span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">;</span>
 
@@ -155,7 +154,7 @@ So here is the partial public interface of my <em>Smart</em> class:</p>
 
 <span class="cm">/* ... */</span>
 
-<span class="nl">public:</span>
+<span class="k">public</span><span class="o">:</span>
   <span class="n">Smart</span><span class="p">();</span>
   <span class="n">Smart</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span><span class="p">);</span>
   <span class="n">Smart</span><span class="p">(</span><span class="k">const</span> <span class="n">Smart</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">other</span><span class="p">);</span>
@@ -172,7 +171,7 @@ The first idea that come in mind is to overload the . (dot) operator. Unfortunat
 <p>So i've added the overloaded <em>operator-&gt;</em> to <em>Smart</em> class with this simple implementation:</p>
 <div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
 <span class="k">class</span> <span class="nc">Smart</span><span class="p">{</span>
-<span class="nl">public:</span>
+<span class="k">public</span><span class="o">:</span>
 
   <span class="cm">/* ... */</span>
 
@@ -183,7 +182,7 @@ The first idea that come in mind is to overload the . (dot) operator. Unfortunat
 </pre></div>
 <p>In my opinion this behavior required to the operator to let the object work as a proxy to the wrapper object (pointer), is quite strange. What happen is that the compiler expands calls to <em>operator-&gt;</em> so that a call like this:</p>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">Object</span> <span class="p">{</span>
-<span class="nl">public:</span>
+<span class="k">public</span><span class="o">:</span>
   <span class="kt">void</span> <span class="n">method</span><span class="p">();</span>
 <span class="p">}</span>
 
@@ -248,7 +247,7 @@ When i try to wrap an object of a certain type for the first time, what happen i
 <div class="highlight"><pre><span class="cm">/* NotSmart.h */</span>
 
 <span class="n">Class</span> <span class="n">NotSmart</span> <span class="p">{</span>
-<span class="nl">public:</span>
+<span class="k">public</span><span class="o">:</span>
   <span class="cm">/* ... */</span>
 
   <span class="kt">void</span> <span class="n">callMe</span><span class="p">(){</span>
@@ -283,7 +282,7 @@ When i try to wrap an object of a certain type for the first time, what happen i
 <span class="p">};</span>
 
 <span class="k">class</span> <span class="nc">B</span> <span class="o">:</span> <span class="k">public</span> <span class="n">A</span> <span class="p">{</span>
-<span class="nl">public:</span>
+<span class="k">public</span><span class="o">:</span>
     <span class="cm">/* ... */</span>
 <span class="p">};</span>
 
@@ -323,29 +322,34 @@ This is a limitation overcome but i will discuss it in a different post to not o
 
 
         </div><!-- /.eleven.columns -->
-        
+
 <div class="three columns">
 
 <h4>Pages</h4>
 
  <ul>
+      <li><a href="http://gpuoti.github.io/pages/resume.html">Resume</a></li>
   </ul>
 
 <h4>Categories</h4>
 <ul>
 		<li><a href="http://gpuoti.github.io/category/cpp.html">cpp</a></li>
+		<li><a href="http://gpuoti.github.io/category/cpp-ide.html">cpp, ide</a></li>
 </ul>
 
 
 <h4>Tags</h4>
 	<ul>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/functional.html">functional</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/shared_ptr.html">shared_ptr</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/sort.html">sort</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/stl.html">stl</a></li>
 	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/smart_ptr.html">smart_ptr</a></li>
-	    <li class="tag-0"><a href="http://gpuoti.github.io/tag/cpp.html">cpp</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/sort.html">sort</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/stl.html">stl</a></li>
+	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/vs2008.html">vs2008</a></li>
+	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/vs2015.html">vs2015</a></li>
+	    <li class="tag-1"><a href="http://gpuoti.github.io/tag/cpp.html">cpp</a></li>
+	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/functional.html">functional</a></li>
+	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/cpp11.html">cpp11</a></li>
 	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/template.html">template</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/shared_ptr.html">shared_ptr</a></li>
 </ul>
 
 

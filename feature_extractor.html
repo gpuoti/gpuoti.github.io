@@ -30,8 +30,6 @@
               </script>
 
 
-
-
 </head>
 
 <body id="index" class="home">
@@ -42,15 +40,16 @@
         <div class="row">
 
           <header id="banner" class="body">
-                  <h1><a href="http://gpuoti.github.io">Coder Notepad <strong></strong></a></h1>
+                  <h1><a href="http://gpuoti.github.io/">Coder Notepad <strong></strong></a></h1>
           </header><!-- /#banner -->
 
             <div id="navigation" class="navbar row">
               <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
              
               <ul class="columns">
-                <li><a href="http://gpuoti.github.io">Home</a></li>
+                <li><a href="http://gpuoti.github.io/">Home</a></li>
 
+                <li><a href="http://gpuoti.github.io/pages/resume.html">Resume</a></li>
 
               </ul>
             </div>
@@ -68,11 +67,11 @@
            
             </header>
             <footer class="post-info">
-              <abbr class="published" title="2014-12-14T00:00:00">
+              <abbr class="published" title="2014-12-14T00:00:00+01:00">
                 dom 14 dicembre 2014
               </abbr>
-              <address class="vcard author">
-                By <a class="url fn" href="http://gpuoti.github.io/author/giuseppe-puoti.html">Giuseppe Puoti</a>
+              <address class="vcard author">By 
+                <a class="url fn" href="http://gpuoti.github.io/author/giuseppe-puoti.html"> Giuseppe Puoti</a>
               </address>
             </footer><!-- /.post-info -->
             <div class="entry-content">
@@ -85,7 +84,7 @@ For example, it is a quite common need to run an STL algorithm based on some of 
   <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
   <span class="n">string</span> <span class="n">s</span><span class="p">;</span>
 
-<span class="nl">public:</span>
+<span class="k">public</span><span class="o">:</span>
   <span class="n">A</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">string</span> <span class="n">s</span><span class="p">){</span>
     <span class="k">this</span><span class="o">-&gt;</span><span class="n">i</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
     <span class="k">this</span><span class="o">-&gt;</span><span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
@@ -119,7 +118,7 @@ If the criteria is common enough, I can expand the A class with an inner class d
 
   <span class="p">...</span>
 
-  <span class="nl">public:</span>
+  <span class="k">public</span><span class="o">:</span>
       <span class="k">struct</span> <span class="n">EqualName</span> <span class="p">{</span>
 
         <span class="n">EqualName</span><span class="p">(</span><span class="n">string</span> <span class="n">target</span><span class="p">){</span>
@@ -130,7 +129,7 @@ If the criteria is common enough, I can expand the A class with an inner class d
           <span class="k">return</span> <span class="n">a</span><span class="p">.</span><span class="n">getName</span><span class="p">()</span> <span class="o">==</span> <span class="n">t</span><span class="p">;</span>
         <span class="p">}</span>
 
-        <span class="nl">private:</span>
+        <span class="k">private</span><span class="o">:</span>
           <span class="n">string</span> <span class="n">t</span><span class="p">;</span>
       <span class="p">};</span>
 <span class="p">};</span>
@@ -343,29 +342,34 @@ What we still need is a way to automatically implement that kind of adaptors. If
 
 
         </div><!-- /.eleven.columns -->
-        
+
 <div class="three columns">
 
 <h4>Pages</h4>
 
  <ul>
+      <li><a href="http://gpuoti.github.io/pages/resume.html">Resume</a></li>
   </ul>
 
 <h4>Categories</h4>
 <ul>
 		<li><a href="http://gpuoti.github.io/category/cpp.html">cpp</a></li>
+		<li><a href="http://gpuoti.github.io/category/cpp-ide.html">cpp, ide</a></li>
 </ul>
 
 
 <h4>Tags</h4>
 	<ul>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/functional.html">functional</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/shared_ptr.html">shared_ptr</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/sort.html">sort</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/stl.html">stl</a></li>
 	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/smart_ptr.html">smart_ptr</a></li>
-	    <li class="tag-0"><a href="http://gpuoti.github.io/tag/cpp.html">cpp</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/sort.html">sort</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/stl.html">stl</a></li>
+	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/vs2008.html">vs2008</a></li>
+	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/vs2015.html">vs2015</a></li>
+	    <li class="tag-1"><a href="http://gpuoti.github.io/tag/cpp.html">cpp</a></li>
+	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/functional.html">functional</a></li>
+	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/cpp11.html">cpp11</a></li>
 	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/template.html">template</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/shared_ptr.html">shared_ptr</a></li>
 </ul>
 
 

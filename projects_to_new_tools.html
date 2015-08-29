@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Port projects to new tools</title>
+        <meta charset="utf-8" />
+        <link href="http://gpuoti.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Full Atom Feed" />
+        <link href="http://gpuoti.github.io/feeds/cpp-ide.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/pygment.css" />
+
+        <script src="http://gpuoti.github.io/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+              <script>
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-56135244-1', 'codernotepad');
+                ga('send', 'pageview');
+
+              </script>
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="http://gpuoti.github.io/">Coder Notepad <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="http://gpuoti.github.io/">Home</a></li>
+
+                <li><a href="http://gpuoti.github.io/pages/resume.html">Resume</a></li>
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://gpuoti.github.io/projects_to_new_tools.html" rel="bookmark"
+                   title="Permalink to Port projects to new tools">Port projects to new tools</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2015-08-27T00:00:00+02:00">
+                gio 27 agosto 2015
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="http://gpuoti.github.io/author/giuseppe-puoti.html"> Giuseppe Puoti</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>At work we use to touch projects as few as possible. To me this lead to bad problems on long term. For example we use to not upgrade our tools. I mean we not adopt modern language standard, new GUI libraries or file formats until we really need to. This force us to do big, potentially risky, tech jumps.</p>
+<p>Because I'm missing more and more new features in the C++ language (we use C++98) and IDEs, I've decided to investigate how much effort would be required to switch a quite complex project from VS2008 to VS2015. Here follows some note from my experience.</p>
+<div class="section" id="build-upgrade">
+<h2>build upgrade</h2>
+<p>The solution conversion run clean apart from some warning reported int the conversion log. Nothing to concern about, just some deprecated features gone.
+This was the easiest part.</p>
+</div>
+<div class="section" id="moved-header">
+<h2>moved header</h2>
+<p>In the new standard, some declaration have moved to different files.</p>
+<blockquote>
+error C3861: 'inserter' not found</blockquote>
+<p>Here the question is, is it still in the STL/C++11?
+A quick look at cppreference.com shows that std::inserter is now declared in iterator header. The same happen to back_inserter and other iterators related stuffs.
+The simple solution was add <em>#include &lt;iterator&gt;</em>.</p>
+</div>
+<div class="section" id="stl-changes">
+<h2>STL changes</h2>
+<p>The comitee has done a great ammount of work from the VS2008 days refining the STL specification. The result is some adaption required for our project to conform.</p>
+<blockquote>
+error C2678: '&lt;&lt;' binary operator not found</blockquote>
+<p>I get this error in a function with this shape:</p>
+<div class="highlight"><pre><span class="kt">void</span>  <span class="nf">foo</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">ostringstream</span> <span class="o">&amp;</span><span class="n">info</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="p">...</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">info</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+<p>Solved this using an explicit string convertion from std::ostringstream using its method str(). Not really the a so great solution but it worked for me. The function above has become:</p>
+<div class="highlight"><pre><span class="kt">void</span>  <span class="nf">foo</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">ostringstream</span> <span class="o">&amp;</span><span class="n">info</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="p">.</span><span class="n">str</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>Then I get:</p>
+<blockquote>
+error C2668: 'std::mem_fun': ambiguous function reference</blockquote>
+<p>Here what went wrong is the resolution of const return type from no const return type version of mem_fun. I expected the resolution to happen based on the constantness of the parameter. But, because the parameter method has both const and unconst overload, it fail resolving the right overload.
+I solved this using a lambda instead of the mem_fun but had some doubt. After posting a question on <em>reddit/r/cpp</em>, were someone (who really knowns what he says) pointed out that the lamda solution was actually the one to follow even to help the optimizer to do its job.</p>
+<blockquote>
+std::bad_cast has no more a constructor accepting custom message so I removed the custom message.</blockquote>
+<p>Sorry for the error reformulation unfortunatly the italian version of VS actually translates also compiler output. I agree with this change, it force us not to use exception that (wrong way) but define our own specialization instead.</p>
+<p>We defined a function copy_if that was not included in C++98 STL. Because now it is in the standard, it was duplicated and ambigous and caused compilation error. This was solved by erasing our implementation of copy_if.</p>
+</div>
+<div class="section" id="linker-errors">
+<h2>Linker errors</h2>
+<p>Then I started to get errors from the Linker. How ungly are they!</p>
+<p>The first I get was a Linker error claiming from mfc90.lib. It cannot find the library.
+This happened because of a static library created with the old IDE and linked (even if dinamically) to MFC I was linking into. Solved by converting also the library project to the new toolchain.</p>
+<p>Then I get an error claiming for a wrong usage of <em>remove_if</em>.
+In fact, <em>remove_if</em> cannot be used on a container like <em>set</em> because keys are immutable and so the ranges cannot be modified.</p>
+<p>We actually were using it in a wrong way or the VS2008 implementation was a bit more permissive.
+The problem was about the remove of all item with a certain property from the set. To solve I've defined the following <em>erase_if</em> helper function that work also on other kind of containers (at least <em>vector</em> and <em>list</em>).</p>
+<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">ContainerT</span><span class="p">,</span> <span class="k">typename</span> <span class="n">PredicateT</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">erase_if</span><span class="p">(</span><span class="n">ContainerT</span><span class="o">&amp;</span> <span class="n">c</span><span class="p">,</span> <span class="n">PredicateT</span><span class="o">&amp;</span> <span class="n">pred</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ContainerT</span><span class="o">::</span><span class="n">const_iterator</span> <span class="n">item</span> <span class="o">=</span> <span class="n">find_if</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">c</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">pred</span><span class="p">);</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">item</span> <span class="o">!=</span> <span class="n">c</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">c</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">item</span><span class="p">);</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">find_if</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">c</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">pred</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">You should prefer the <em>erase-remove</em> idiom for the supported containers like vector as it is more efficient.</p>
+</div>
+</div>
+<div class="section" id="conclusions">
+<h2>Conclusions</h2>
+<p>So what the required effort?
+The projects I used for my little test is the one I'm working on day basis for about 6 month. It is not particulary big bou it use few quite complex proprietary library that needed to be converted too.
+It took a couple of my holyday day so I not really worked so hard. Not that big effort at the end.</p>
+</div>
+
+            </div><!-- /.entry-content -->
+            <div class="comments">
+              <h3>Comments</h3>
+              <div id="disqus_thread"></div>
+              <script type="text/javascript">
+                var disqus_identifier = "projects_to_new_tools.html";
+                (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://codernotepad.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+              </script>
+            </div>
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+      <li><a href="http://gpuoti.github.io/pages/resume.html">Resume</a></li>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="http://gpuoti.github.io/category/cpp.html">cpp</a></li>
+		<li><a href="http://gpuoti.github.io/category/cpp-ide.html">cpp, ide</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/smart_ptr.html">smart_ptr</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/sort.html">sort</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/stl.html">stl</a></li>
+	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/vs2008.html">vs2008</a></li>
+	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/vs2015.html">vs2015</a></li>
+	    <li class="tag-1"><a href="http://gpuoti.github.io/tag/cpp.html">cpp</a></li>
+	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/functional.html">functional</a></li>
+	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/cpp11.html">cpp11</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/template.html">template</a></li>
+	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/shared_ptr.html">shared_ptr</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://github.com/gpuoti">Github</a></li>
+    <li><a href="http://www.linkedin.com/pub/giuseppe-puoti/2b/b37/748">Linkedin</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+                <li><div class="btn primary"><a href="https://github.com/gpuoti" target="_blank">Github</a></div></li>
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'codernotepad';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  <script src="http://gpuoti.github.io/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://gpuoti.github.io/theme/js/libs/gumby.min.js"></script>
+  <script src="http://gpuoti.github.io/theme/js/plugins.js"></script>
+</body>
+</html>
