@@ -295,6 +295,13 @@ li {
   line-height:150%;
 }
 
+ol.post-list li {
+  padding-bottom: 0.5em;
+  padding-left:0%;
+  margin-left:0%;
+  line-height:150%;
+}
+
 div.three.columns ul li{
   padding-bottom: 0.3em;
   padding-left:0%;
