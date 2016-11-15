@@ -1,81 +1,122 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
 <html lang="en">
-<head>
-
-        <title>Port projects to new tools</title>
-        <meta charset="utf-8" />
-        <link href="http://gpuoti.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Full Atom Feed" />
-        <link href="http://gpuoti.github.io/feeds/cpp-ide.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Categories Atom Feed" />
-
-
-        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
-        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
-
-        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/gumby.css" />
-        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/style.css" />
-        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/pygment.css" />
-
-        <script src="http://gpuoti.github.io/theme/js/libs/modernizr-2.6.2.min.js"></script>
+<!--<![endif]-->
+	<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="author" content="Giuseppe Puoti">
 
 
-              <script>
-                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-                ga('create', 'UA-56135244-1', 'codernotepad');
-                ga('send', 'pageview');
-
-              </script>
+        <title>Coder Notepad - Port projects to new tools</title>
 
 
-</head>
+        <!-- CSS -->
+        <link rel="stylesheet" href="/theme/css/style.css">
 
-<body id="index" class="home">
+        <!-- Custom CSS -->
+        	<link rel="stylesheet" href="/theme/css/colors/blue.css" id="colors">
 
-
-    <div class="container">
-
-        <div class="row">
-
-          <header id="banner" class="body">
-                  <h1><a href="http://gpuoti.github.io/">Coder Notepad <strong></strong></a></h1>
-          </header><!-- /#banner -->
-
-            <div id="navigation" class="navbar row">
-              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
-             
-              <ul class="columns">
-                <li><a href="http://gpuoti.github.io/">Home</a></li>
-
-                <li><a href="http://gpuoti.github.io/pages/resume.html">Resume</a></li>
-
-              </ul>
-            </div>
-
-<section id="content" class="body">
-
-   <div class="row">
-        <div class="eleven columns">
+        <!-- Code highlight color scheme -->
+            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
 
 
-            <header>
-              <h2 class="entry-title">
-                <a href="http://gpuoti.github.io/projects_to_new_tools.html" rel="bookmark"
-                   title="Permalink to Port projects to new tools">Port projects to new tools</a></h2>
-           
-            </header>
-            <footer class="post-info">
-              <abbr class="published" title="2015-08-27T00:00:00+02:00">
-                gio 27 agosto 2015
-              </abbr>
-              <address class="vcard author">By 
-                <a class="url fn" href="http://gpuoti.github.io/author/giuseppe-puoti.html"> Giuseppe Puoti</a>
-              </address>
-            </footer><!-- /.post-info -->
-            <div class="entry-content">
-              <p>At work we use to touch projects as few as possible. To me this lead to bad problems on long term. For example we use to not upgrade our tools. I mean we not adopt modern language standard, new GUI libraries or file formats until we really need to. This force us to do big, potentially risky, tech jumps.</p>
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+
+        <meta name="tags" contents="cpp" />
+        <meta name="tags" contents="cpp11" />
+        <meta name="tags" contents="stl" />
+        <meta name="tags" contents="vs2015" />
+        <meta name="tags" contents="vs2008" />
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="Coder Notepad">
+
+	<meta property="og:type" content="article">
+	<meta property="article:author" content="">
+	<meta property="og:url" content="/projects_to_new_tools.html">
+	<meta property="og:title" content="Port projects to new tools">
+	<meta property="og:description" content="">
+	   <meta property="og:image" content="/images/guilherme-toti.jpg">
+	<meta property="article:published_time" content="2015-08-27 00:00:00+02:00">
+	</head>
+	<body>
+		<header id="header">
+			<!-- Container -->
+			<div class="container">
+				<!-- Logo / Mobile Menu -->
+				<div class="three columns">
+					<div id="logo">
+						<h1><a href="/">Coder Notepad</a></h1>
+					</div>
+				</div>
+				<!-- Navigation
+				================================================== -->
+				<div class="thirteen columns">
+					
+					<nav id="navigation" class="menu">
+						<ul id="responsive">
+
+							<li><a href="/">Home</a></li>
+
+
+							        <li><a href="/pages/resume.html">Resume</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+			<!-- Container / End -->
+		</header>
+		<!-- Header / End -->
+		
+		<div id="content-wrapper">
+			<section id="titlebar">
+				<!-- Container -->
+				<div class="container">
+					<div class="sixteen columns">						
+						<nav id="breadcrumbs">
+							<ul>
+								<li>You are here:</li>
+								<li><a href="/">Home</a></li>
+<li><a href="/category/cpp, ide">cpp, ide</a></li>
+<li>Port projects to new tools</li>
+							</ul>
+						</nav>
+					</div>
+
+				</div>
+				<!-- Container / End -->
+			</section>
+
+			<div class="container">
+	<div class="twelve alt columns">
+<article class="post" style="margin: 0; border: 0;">
+	
+	<div class="post-format">
+		<div class="circle"><i class="icon-pencil"></i><span></span></div>
+	</div>
+
+	<section class="post-content">
+
+		<header class="meta">
+			<h2><a href="/projects_to_new_tools.html">Port projects to new tools</a></h2>
+			<ul>
+				<li>By <a href="/author/giuseppe-puoti.html">Giuseppe Puoti</a></li>
+				<li>gio 27 agosto 2015</li>
+			</ul>
+		</header>
+
+		<p>At work we use to touch projects as few as possible. To me this lead to bad problems on long term. For example we use to not upgrade our tools. I mean we not adopt modern language standard, new GUI libraries or file formats until we really need to. This force us to do big, potentially risky, tech jumps.</p>
 <p>Because I'm missing more and more new features in the C++ language (we use C++98) and IDEs, I've decided to investigate how much effort would be required to switch a quite complex project from VS2008 to VS2015. Here follows some note from my experience.</p>
 <div class="section" id="build-upgrade">
 <h2>build upgrade</h2>
@@ -97,7 +138,7 @@ The simple solution was add <em>#include &lt;iterator&gt;</em>.</p>
 <blockquote>
 error C2678: '&lt;&lt;' binary operator not found</blockquote>
 <p>I get this error in a function with this shape:</p>
-<div class="highlight"><pre><span class="kt">void</span>  <span class="nf">foo</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">ostringstream</span> <span class="o">&amp;</span><span class="n">info</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kt">void</span>  <span class="nf">foo</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">ostringstream</span> <span class="o">&amp;</span><span class="n">info</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="p">...</span>
         <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">info</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
@@ -105,7 +146,7 @@ error C2678: '&lt;&lt;' binary operator not found</blockquote>
 <span class="p">}</span>
 </pre></div>
 <p>Solved this using an explicit string convertion from std::ostringstream using its method str(). Not really the a so great solution but it worked for me. The function above has become:</p>
-<div class="highlight"><pre><span class="kt">void</span>  <span class="nf">foo</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">ostringstream</span> <span class="o">&amp;</span><span class="n">info</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kt">void</span>  <span class="nf">foo</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">ostringstream</span> <span class="o">&amp;</span><span class="n">info</span><span class="p">)</span>
 <span class="p">{</span>
         <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="p">.</span><span class="n">str</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="p">}</span>
@@ -129,7 +170,7 @@ This happened because of a static library created with the old IDE and linked (e
 In fact, <em>remove_if</em> cannot be used on a container like <em>set</em> because keys are immutable and so the ranges cannot be modified.</p>
 <p>We actually were using it in a wrong way or the VS2008 implementation was a bit more permissive.
 The problem was about the remove of all item with a certain property from the set. To solve I've defined the following <em>erase_if</em> helper function that work also on other kind of containers (at least <em>vector</em> and <em>list</em>).</p>
-<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">ContainerT</span><span class="p">,</span> <span class="k">typename</span> <span class="n">PredicateT</span><span class="o">&gt;</span>
+<div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">ContainerT</span><span class="p">,</span> <span class="k">typename</span> <span class="n">PredicateT</span><span class="o">&gt;</span>
 <span class="kt">void</span> <span class="n">erase_if</span><span class="p">(</span><span class="n">ContainerT</span><span class="o">&amp;</span> <span class="n">c</span><span class="p">,</span> <span class="n">PredicateT</span><span class="o">&amp;</span> <span class="n">pred</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">ContainerT</span><span class="o">::</span><span class="n">const_iterator</span> <span class="n">item</span> <span class="o">=</span> <span class="n">find_if</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">c</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">pred</span><span class="p">);</span>
 
@@ -151,114 +192,81 @@ The projects I used for my little test is the one I'm working on day basis for a
 It took a couple of my holyday day so I not really worked so hard. Not that big effort at the end.</p>
 </div>
 
-            </div><!-- /.entry-content -->
-            <div class="comments">
-              <h3>Comments</h3>
-              <div id="disqus_thread"></div>
-              <script type="text/javascript">
-                var disqus_identifier = "projects_to_new_tools.html";
-                (function() {
-                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'http://codernotepad.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                })();
-              </script>
-            </div>
+
+		    <div class="tags">
+		        <p>tags: <a href="/tag/cpp.html">cpp</a><a href="/tag/cpp11.html">cpp11</a><a href="/tag/stl.html">stl</a><a href="/tag/vs2015.html">vs2015</a><a href="/tag/vs2008.html">vs2008</a></p>
+		    </div>
+
+<div class="sharing">
+</div>
+<hr>
+		
+		    <div class="comments">
+		        <div id="disqus_thread"></div>
+		        <script type="text/javascript">
+		            var disqus_shortname = 'codernotepad';
+		            var disqus_identifier = 'projects_to_new_tools.html';
+		            var disqus_url = '/projects_to_new_tools.html';
+		            (function() {
+		                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		                dsq.src = '//codernotepad.disqus.com/embed.js';
+		                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		            })();
+		        </script>
+		        <noscript>Please enable JavaScript to view the comments.</noscript>
+		    </div>
+	</section>
+	<div class="clearfix"></div>
+
+</article>
+
+	</div>
+
+	<!-- Sidebar -->
+	<div class="four columns">
+
+		
+	</div>
+			</div>
+			<!-- Container / End -->
+		</div>
+		<!-- Content Wrapper / End -->
 
 
-        </div><!-- /.eleven.columns -->
-
-<div class="three columns">
-
-<h4>Pages</h4>
-
- <ul>
-      <li><a href="http://gpuoti.github.io/pages/resume.html">Resume</a></li>
-  </ul>
-
-<h4>Categories</h4>
-<ul>
-		<li><a href="http://gpuoti.github.io/category/cpp.html">cpp</a></li>
-		<li><a href="http://gpuoti.github.io/category/cpp-ide.html">cpp, ide</a></li>
-</ul>
-
-
-<h4>Tags</h4>
-	<ul>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/sort.html">sort</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/shared_ptr.html">shared_ptr</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/smart_ptr.html">smart_ptr</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/vs2008.html">vs2008</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/stl.html">stl</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/vs2015.html">vs2015</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/cpp11.html">cpp11</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/functional.html">functional</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/template.html">template</a></li>
-	    <li class="tag-1"><a href="http://gpuoti.github.io/tag/cpp.html">cpp</a></li>
-</ul>
-
-
-<nav class="widget">
-  <h4>Social</h4>
-  <ul>
-    <li><a href="https://github.com/gpuoti">Github</a></li>
-    <li><a href="http://www.linkedin.com/pub/giuseppe-puoti/2b/b37/748">Linkedin</a></li>
-  </ul>
-</nav>
-
-</div> </div><!-- /.row -->
-
-
-</section>
-
-       </div><!-- /.row -->
-    </div><!-- /.container -->
-
-
-       <div class="container.nopad bg">
-
-    
-        <footer id="credits" class="row">
-          <div class="seven columns left-center">
-
-                   <address id="about" class="vcard body">
-                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
-                    which takes great advantage of <a href="http://python.org">Python</a>.
-                    <br />
-                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
-                    </address>
-          </div>
-
-
-          <div class="seven columns">
-            <div class="row">
-              <ul class="socbtns">
-
-                <li><div class="btn primary"><a href="https://github.com/gpuoti" target="_blank">Github</a></div></li>
-
-                <li><div class="btn twitter"><a href="https://twitter.com/giuspuot" target="_blank">Twitter</a></div></li>
-
-
-
-              </ul>
-            </div>
-          </div>
-        </footer>
-
-    </div>
-
-
+		<div id="footer-bottom">
+			<!-- Container -->
+			<div class="container">
+				<div class="eight columns">Blog powered by <a href="http://getpelican.com">Pelican</a></div>
+					<div class="eight columns">
+						<ul class="social-icons-footer">
+								<li>
+									<a href="https://github.com/gpuoti" class="tooltip top" title="Github">
+										<i class="icon-github"></i>
+									</a>
+								</li>
+								<li>
+									<a href="http://www.linkedin.com/pub/giuseppe-puoti/2b/b37/748" class="tooltip top" title="Linkedin">
+										<i class="icon-linkedin"></i>
+									</a>
+								</li>
+							<li><a href="/None" class="tooltip top" title="RSS"><i class="icon-rss"></i></a></li>
+						</ul>
+					</div>
+			</div>
+			<!-- Container / End -->
+		</div>
+		<!-- Footer Bottom / End -->
+		
+	<!-- Javascripts -->
+	<script src="/theme/js/jquery.min.js"></script>
 <script type="text/javascript">
     var disqus_shortname = 'codernotepad';
     (function () {
         var s = document.createElement('script'); s.async = true;
         s.type = 'text/javascript';
-        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
         (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
     }());
 </script>
-  <script src="http://gpuoti.github.io/theme/js/libs/jquery-1.9.1.min.js"></script>
-  <script src="http://gpuoti.github.io/theme/js/libs/gumby.min.js"></script>
-  <script src="http://gpuoti.github.io/theme/js/plugins.js"></script>
-</body>
+	</body>
 </html>

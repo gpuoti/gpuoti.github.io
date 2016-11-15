@@ -1,86 +1,125 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
 <html lang="en">
-<head>
-
-        <title>smart pointers finally</title>
-        <meta charset="utf-8" />
-        <link href="http://gpuoti.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Full Atom Feed" />
-        <link href="http://gpuoti.github.io/feeds/cpp.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Categories Atom Feed" />
-
-
-        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
-        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
-
-        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/gumby.css" />
-        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/style.css" />
-        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/pygment.css" />
-
-        <script src="http://gpuoti.github.io/theme/js/libs/modernizr-2.6.2.min.js"></script>
+<!--<![endif]-->
+	<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="author" content="Giuseppe Puoti">
 
 
-              <script>
-                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-                ga('create', 'UA-56135244-1', 'codernotepad');
-                ga('send', 'pageview');
-
-              </script>
+        <title>Coder Notepad - smart pointers finally</title>
 
 
-</head>
+        <!-- CSS -->
+        <link rel="stylesheet" href="/theme/css/style.css">
 
-<body id="index" class="home">
+        <!-- Custom CSS -->
+        	<link rel="stylesheet" href="/theme/css/colors/blue.css" id="colors">
 
-
-    <div class="container">
-
-        <div class="row">
-
-          <header id="banner" class="body">
-                  <h1><a href="http://gpuoti.github.io/">Coder Notepad <strong></strong></a></h1>
-          </header><!-- /#banner -->
-
-            <div id="navigation" class="navbar row">
-              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
-             
-              <ul class="columns">
-                <li><a href="http://gpuoti.github.io/">Home</a></li>
-
-                <li><a href="http://gpuoti.github.io/pages/resume.html">Resume</a></li>
-
-              </ul>
-            </div>
-
-<section id="content" class="body">
-
-   <div class="row">
-        <div class="eleven columns">
+        <!-- Code highlight color scheme -->
+            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
 
 
-            <header>
-              <h2 class="entry-title">
-                <a href="http://gpuoti.github.io/shared_ptr.html" rel="bookmark"
-                   title="Permalink to smart pointers finally">smart pointers finally</a></h2>
-           
-            </header>
-            <footer class="post-info">
-              <abbr class="published" title="2014-03-03T00:00:00+01:00">
-                lun 03 marzo 2014
-              </abbr>
-              <address class="vcard author">By 
-                <a class="url fn" href="http://gpuoti.github.io/author/giuseppe-puoti.html"> Giuseppe Puoti</a>
-              </address>
-            </footer><!-- /.post-info -->
-            <div class="entry-content">
-              <div class="section" id="the-problem">
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+
+        <meta name="tags" contents="cpp" />
+        <meta name="tags" contents="smart_ptr" />
+        <meta name="tags" contents="shared_ptr" />
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="Coder Notepad">
+
+	<meta property="og:type" content="article">
+	<meta property="article:author" content="">
+	<meta property="og:url" content="/shared_ptr.html">
+	<meta property="og:title" content="smart pointers finally">
+	<meta property="og:description" content="">
+	   <meta property="og:image" content="/images/guilherme-toti.jpg">
+	<meta property="article:published_time" content="2014-03-03 00:00:00+01:00">
+	</head>
+	<body>
+		<header id="header">
+			<!-- Container -->
+			<div class="container">
+				<!-- Logo / Mobile Menu -->
+				<div class="three columns">
+					<div id="logo">
+						<h1><a href="/">Coder Notepad</a></h1>
+					</div>
+				</div>
+				<!-- Navigation
+				================================================== -->
+				<div class="thirteen columns">
+					
+					<nav id="navigation" class="menu">
+						<ul id="responsive">
+
+							<li><a href="/">Home</a></li>
+
+
+							        <li><a href="/pages/resume.html">Resume</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+			<!-- Container / End -->
+		</header>
+		<!-- Header / End -->
+		
+		<div id="content-wrapper">
+			<section id="titlebar">
+				<!-- Container -->
+				<div class="container">
+					<div class="sixteen columns">						
+						<nav id="breadcrumbs">
+							<ul>
+								<li>You are here:</li>
+								<li><a href="/">Home</a></li>
+<li><a href="/category/cpp">cpp</a></li>
+<li>smart pointers finally</li>
+							</ul>
+						</nav>
+					</div>
+
+				</div>
+				<!-- Container / End -->
+			</section>
+
+			<div class="container">
+	<div class="twelve alt columns">
+<article class="post" style="margin: 0; border: 0;">
+	
+	<div class="post-format">
+		<div class="circle"><i class="icon-pencil"></i><span></span></div>
+	</div>
+
+	<section class="post-content">
+
+		<header class="meta">
+			<h2><a href="/shared_ptr.html">smart pointers finally</a></h2>
+			<ul>
+				<li>By <a href="/author/giuseppe-puoti.html">Giuseppe Puoti</a></li>
+				<li>lun 03 marzo 2014</li>
+			</ul>
+		</header>
+
+		<div class="section" id="the-problem">
 <h2>the problem</h2>
 <p>Finally i've convinced myself to move to them. It's one of those thinks that you fear without a real reason,  even if you know they are useful and not so difficult to use, you delays their adoption excusing yourself telling of too tight deadlines or too deep modification required.</p>
 <p>My trigger was a stupid error about not clear object's ownership assignment.
 For example, suppose you are implementing a Composite pattern:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Composite</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Composite</span> <span class="p">{</span>
   <span class="n">list</span><span class="o">&lt;</span><span class="n">Component</span><span class="o">*&gt;</span> <span class="n">components</span><span class="p">;</span>
 
   <span class="kt">void</span> <span class="nf">add</span><span class="p">(</span><span class="n">Component</span> <span class="o">*</span><span class="n">c</span><span class="p">)</span> <span class="p">{</span>
@@ -110,7 +149,7 @@ One destruction happen because of their allocation on the call stack and the oth
 <p>The obvious would be use shared_ptr from C++11 standard library but i'm constrained to use quite old compilers that are not compliant with the new standard.
 Moreover, i'd like to use objects with a semantic similar to the one implemented by modern OO languages such as Java or D with as little syntax pain as possible.
 I would like to write something such as:</p>
-<div class="highlight"><pre><span class="n">SmartTestClass</span> <span class="n">obj1</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="n">SmartTestClass</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><span class="n">SmartTestClass</span> <span class="n">obj1</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="n">SmartTestClass</span><span class="p">);</span>
 <span class="n">SmartTestClass</span> <span class="n">obj2</span> <span class="o">=</span> <span class="n">obj1</span><span class="p">;</span>
 <span class="n">SmartTestClass</span> <span class="n">obj3</span><span class="p">;</span>
 </pre></div>
@@ -127,7 +166,7 @@ I would like to write something such as:</p>
 <p>Moreover, what is implicit in the example is the fact that objects are automatically deleted when they are no more useful. That is no more SmartTestClass objects refers to them. In Other words, any SmartTestClass object will share the property of the referred object with any other referring to it while it continue to handle that object.</p>
 <p>This can be done using a wrapper class that can wrap any object and tracing for each object wrapped the number of wrappers.
 This is clearly a template class, i called it <em>Smart</em>:</p>
-<div class="highlight"><pre>    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<div class="highlight"><pre><span></span>    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
     <span class="k">class</span> <span class="nc">Smart</span> <span class="p">{</span>
     <span class="k">static</span> <span class="n">map</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">counters</span><span class="p">;</span>
 
@@ -149,7 +188,7 @@ There is also an instance attribute, a map that store, for each wrapped object, 
 </ul>
 <p>In every of this cases, except for the first, the shared property of any previously wrapped object must be also released.
 So here is the partial public interface of my <em>Smart</em> class:</p>
-<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
 <span class="k">class</span> <span class="nc">Smart</span> <span class="p">{</span>
 
 <span class="cm">/* ... */</span>
@@ -169,7 +208,7 @@ So here is the partial public interface of my <em>Smart</em> class:</p>
 The first idea that come in mind is to overload the . (dot) operator. Unfortunately this is one of that few thinks that C++ dosn't allow.</p>
 <p>But, what you can do is overload the <em>operator-&gt;</em> behavior that let us send message to objects as as they are handled through a pointer (in fact they are, a <em>Smart</em> object is actually a <em>Smart</em> pointer to the object).</p>
 <p>So i've added the overloaded <em>operator-&gt;</em> to <em>Smart</em> class with this simple implementation:</p>
-<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
 <span class="k">class</span> <span class="nc">Smart</span><span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
 
@@ -181,7 +220,7 @@ The first idea that come in mind is to overload the . (dot) operator. Unfortunat
 <span class="p">};</span>
 </pre></div>
 <p>In my opinion this behavior required to the operator to let the object work as a proxy to the wrapper object (pointer), is quite strange. What happen is that the compiler expands calls to <em>operator-&gt;</em> so that a call like this:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Object</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Object</span> <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
   <span class="kt">void</span> <span class="n">method</span><span class="p">();</span>
 <span class="p">}</span>
@@ -190,12 +229,12 @@ The first idea that come in mind is to overload the . (dot) operator. Unfortunat
 <span class="n">sm</span><span class="o">-&gt;</span><span class="n">method</span><span class="p">();</span>
 </pre></div>
 <p>will become at compile time somethink like:</p>
-<div class="highlight"><pre><span class="n">sm</span><span class="o">-&gt;</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">method</span><span class="p">();</span>
+<div class="highlight"><pre><span></span><span class="n">sm</span><span class="o">-&gt;</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">method</span><span class="p">();</span>
 </pre></div>
 <p>On this code snippets i'm cheating, omitting something is actually required to let objects of a particular class to be available to be wrapped into a <em>Smart</em> object.
 You have noticed that the <em>Smart</em> class has a static map attribute to store the number of references for each wrapped pointer. But the <em>Smart</em> class is a template one so, every each time you try to wrap an object belonging to a different class, a new map is declared and but it is up to you to provide that map instance (usually you would instantiate it in your object implementation file).</p>
 <p>So you should provide an instantiation (and only one!) like this every each time you decide to wrap an object.</p>
-<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">*</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">Smart</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;::</span><span class="n">counters</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">*</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">Smart</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;::</span><span class="n">counters</span><span class="p">;</span>
 </pre></div>
 <p>This is not a real nice think to do but it is necessary in this implementation and usefull to leave as decoupled as possible wrapper object from wrapper one or, in other words, to let any object be wrappable.</p>
 <p>I will overtake it so stay tuned!</p>
@@ -205,26 +244,26 @@ You have noticed that the <em>Smart</em> class has a static map attribute to sto
 <p>Till now, my <em>Smart</em> implementation require still some ugly code to be written. I now want to simplify this.
 First of all notice that there is a <em>typedef</em> in the <em>Smart</em> class so that every wrapper class instantiated is linked to the class of objects it wraps.</p>
 <p>This makes possible to introduce an helper function that let me create a wrapped object based on the type of objects it wraps.</p>
-<div class="highlight"><pre><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">WrapperT</span><span class="o">&gt;</span> <span class="n">WrapperT</span> <span class="n">SmartCreate</span><span class="p">(){</span>
+<div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">WrapperT</span><span class="o">&gt;</span> <span class="n">WrapperT</span> <span class="n">SmartCreate</span><span class="p">(){</span>
   <span class="k">return</span> <span class="n">WrapperT</span><span class="p">(</span><span class="k">new</span> <span class="n">WrapperT</span><span class="o">::</span><span class="n">wrappedType</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 <p>This only requires that the wrapped object has a default constructor.</p>
 <p>With this little magic introduced i can instantiate my Smart objects with something like:</p>
-<div class="highlight"><pre><span class="n">Smart</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">sm</span> <span class="o">=</span> <span class="n">SmartCreate</span><span class="o">&lt;</span><span class="n">Smart</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;&gt;</span><span class="p">();</span>
+<div class="highlight"><pre><span></span><span class="n">Smart</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">sm</span> <span class="o">=</span> <span class="n">SmartCreate</span><span class="o">&lt;</span><span class="n">Smart</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;&gt;</span><span class="p">();</span>
 </pre></div>
 <p>Of course it is ugly too but a <em>typedef</em> may help.
 When i try to wrap an object of a certain type for the first time, what happen is that i'm instantiating a new <em>Smart</em> class from the template. As you know, it is actually a different type for the compiler and i can let this think be more clear to myself too using a typef:</p>
-<div class="highlight"><pre><span class="k">typedef</span> <span class="n">Smart</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">SmartObj</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="n">Smart</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">SmartObj</span><span class="p">;</span>
 <span class="n">SmartObj</span> <span class="n">sm</span> <span class="o">=</span> <span class="n">SmartCreate</span><span class="o">&lt;</span><span class="n">SmartObj</span><span class="o">&gt;</span><span class="p">();</span>
 </pre></div>
 <p>To avoid angular parentesys, just use a macro:</p>
-<div class="highlight"><pre><span class="cp">#define create(SMART_CLASS) SmartCreate&lt;SMART_CLASS&gt;();</span>
+<div class="highlight"><pre><span></span><span class="cp">#define create(SMART_CLASS) SmartCreate&lt;SMART_CLASS&gt;();</span>
 
 <span class="n">SmartObj</span> <span class="n">sm</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="n">SmartObj</span><span class="p">);</span>
 </pre></div>
 <p>So creating a Smart object has become as simple as instantiating a similar  object in other languages such as Java or C# or even D.</p>
-<div class="highlight"><pre><span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+<div class="highlight"><pre><span></span><span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
 
   <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[]){</span>
     <span class="n">Object</span> <span class="n">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Object</span><span class="o">();</span>
@@ -240,11 +279,11 @@ When i try to wrap an object of a certain type for the first time, what happen i
 <li>declare the a new type for the wrapper class</li>
 </ul>
 <p>Two macro will help to state what we want to do with the wrapped object instead of deal with implementations details:</p>
-<div class="highlight"><pre><span class="cp">#define DECLARE_SMART(__CLASS_NAME__, __SMART_NAME__) typedef Smart&lt;__CLASS_NAME__&gt; __SMART_NAME__;</span>
+<div class="highlight"><pre><span></span><span class="cp">#define DECLARE_SMART(__CLASS_NAME__, __SMART_NAME__) typedef Smart&lt;__CLASS_NAME__&gt; __SMART_NAME__;</span>
 <span class="cp">#define IMPLEMENT_SMART(__CLASS_NAME__) map&lt;__CLASS_NAME__*, unsigned int&gt; Smart&lt;__CLASS_NAME__&gt;::counters;</span>
 </pre></div>
 <p>with those two macro, when i want a to use Objects of a certain class in a smart way, i state somethink like:</p>
-<div class="highlight"><pre><span class="cm">/* NotSmart.h */</span>
+<div class="highlight"><pre><span></span><span class="cm">/* NotSmart.h */</span>
 
 <span class="n">Class</span> <span class="n">NotSmart</span> <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
@@ -256,12 +295,12 @@ When i try to wrap an object of a certain type for the first time, what happen i
 
 <span class="p">}</span>
 </pre></div>
-<div class="highlight"><pre><span class="cm">/* MyObject.h */</span>
+<div class="highlight"><pre><span></span><span class="cm">/* MyObject.h */</span>
 <span class="n">DECLARE_SMART</span><span class="p">(</span><span class="n">NotSmart</span><span class="p">,</span> <span class="n">MyObject</span> <span class="p">)</span>
 
 <span class="kt">void</span> <span class="n">exec</span><span class="p">(</span><span class="n">MyObject</span><span class="o">&amp;</span> <span class="n">obj</span><span class="p">);</span>
 </pre></div>
-<div class="highlight"><pre><span class="cm">/* MyObject.cpp */</span>
+<div class="highlight"><pre><span></span><span class="cm">/* MyObject.cpp */</span>
 <span class="n">IMPLEMENT_SMART</span><span class="p">(</span><span class="n">MyObject</span><span class="p">)</span>
 
 <span class="kt">void</span> <span class="n">exec</span><span class="p">(</span><span class="n">MyObject</span><span class="o">&amp;</span> <span class="n">obj</span><span class="p">){</span>
@@ -275,7 +314,7 @@ When i try to wrap an object of a certain type for the first time, what happen i
 <span class="p">}</span>
 </pre></div>
 <p>This is my very first i smart pointers implementation, it aims to be generic but i know it is quite limited. The major limitation i see at this point is that it do not support polymorphism, for example, you cannot write thinks such as:</p>
-<div class="highlight"><pre><span class="cm">/* MultipleObjects.h</span>
+<div class="highlight"><pre><span></span><span class="cm">/* MultipleObjects.h</span>
 <span class="cm">class A {</span>
 <span class="cm">public:</span>
 <span class="cm">    /** some interface methods **/</span>
@@ -289,13 +328,13 @@ When i try to wrap an object of a certain type for the first time, what happen i
 <span class="n">DECLARE_SMART</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">SmartA</span><span class="p">)</span>
 <span class="n">DECLARE_SMART</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">SmartB</span><span class="p">)</span>
 </pre></div>
-<div class="highlight"><pre><span class="cm">/* MultipleObjects.cpp */</span>
+<div class="highlight"><pre><span></span><span class="cm">/* MultipleObjects.cpp */</span>
 <span class="n">IMPLEMENT_SMART</span><span class="p">(</span><span class="n">SmartA</span><span class="p">)</span>
 <span class="n">IMPLEMENT_SMART</span><span class="p">(</span><span class="n">SmartB</span><span class="p">)</span>
 
 <span class="cm">/* implement methods for A and B */</span>
 </pre></div>
-<div class="highlight"><pre><span class="cp">#include &quot;MultipleObjects.h&quot;</span>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;MultipleObjects.h&quot;</span><span class="cp"></span>
 <span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]){</span>
     <span class="n">SmartB</span> <span class="n">b</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="n">SmartB</span><span class="p">);</span>
     <span class="n">SmartA</span> <span class="n">a</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
@@ -306,114 +345,81 @@ When i try to wrap an object of a certain type for the first time, what happen i
 This is a limitation overcome but i will discuss it in a different post to not overload too much this already too long. Stay tuned.</p>
 </div>
 
-            </div><!-- /.entry-content -->
-            <div class="comments">
-              <h3>Comments</h3>
-              <div id="disqus_thread"></div>
-              <script type="text/javascript">
-                var disqus_identifier = "shared_ptr.html";
-                (function() {
-                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'http://codernotepad.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                })();
-              </script>
-            </div>
+
+		    <div class="tags">
+		        <p>tags: <a href="/tag/cpp.html">cpp</a><a href="/tag/smart_ptr.html">smart_ptr</a><a href="/tag/shared_ptr.html">shared_ptr</a></p>
+		    </div>
+
+<div class="sharing">
+</div>
+<hr>
+		
+		    <div class="comments">
+		        <div id="disqus_thread"></div>
+		        <script type="text/javascript">
+		            var disqus_shortname = 'codernotepad';
+		            var disqus_identifier = 'shared_ptr.html';
+		            var disqus_url = '/shared_ptr.html';
+		            (function() {
+		                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		                dsq.src = '//codernotepad.disqus.com/embed.js';
+		                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		            })();
+		        </script>
+		        <noscript>Please enable JavaScript to view the comments.</noscript>
+		    </div>
+	</section>
+	<div class="clearfix"></div>
+
+</article>
+
+	</div>
+
+	<!-- Sidebar -->
+	<div class="four columns">
+
+		
+	</div>
+			</div>
+			<!-- Container / End -->
+		</div>
+		<!-- Content Wrapper / End -->
 
 
-        </div><!-- /.eleven.columns -->
-
-<div class="three columns">
-
-<h4>Pages</h4>
-
- <ul>
-      <li><a href="http://gpuoti.github.io/pages/resume.html">Resume</a></li>
-  </ul>
-
-<h4>Categories</h4>
-<ul>
-		<li><a href="http://gpuoti.github.io/category/cpp.html">cpp</a></li>
-		<li><a href="http://gpuoti.github.io/category/cpp-ide.html">cpp, ide</a></li>
-</ul>
-
-
-<h4>Tags</h4>
-	<ul>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/sort.html">sort</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/shared_ptr.html">shared_ptr</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/smart_ptr.html">smart_ptr</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/vs2008.html">vs2008</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/stl.html">stl</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/vs2015.html">vs2015</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/cpp11.html">cpp11</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/functional.html">functional</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/template.html">template</a></li>
-	    <li class="tag-1"><a href="http://gpuoti.github.io/tag/cpp.html">cpp</a></li>
-</ul>
-
-
-<nav class="widget">
-  <h4>Social</h4>
-  <ul>
-    <li><a href="https://github.com/gpuoti">Github</a></li>
-    <li><a href="http://www.linkedin.com/pub/giuseppe-puoti/2b/b37/748">Linkedin</a></li>
-  </ul>
-</nav>
-
-</div> </div><!-- /.row -->
-
-
-</section>
-
-       </div><!-- /.row -->
-    </div><!-- /.container -->
-
-
-       <div class="container.nopad bg">
-
-    
-        <footer id="credits" class="row">
-          <div class="seven columns left-center">
-
-                   <address id="about" class="vcard body">
-                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
-                    which takes great advantage of <a href="http://python.org">Python</a>.
-                    <br />
-                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
-                    </address>
-          </div>
-
-
-          <div class="seven columns">
-            <div class="row">
-              <ul class="socbtns">
-
-                <li><div class="btn primary"><a href="https://github.com/gpuoti" target="_blank">Github</a></div></li>
-
-                <li><div class="btn twitter"><a href="https://twitter.com/giuspuot" target="_blank">Twitter</a></div></li>
-
-
-
-              </ul>
-            </div>
-          </div>
-        </footer>
-
-    </div>
-
-
+		<div id="footer-bottom">
+			<!-- Container -->
+			<div class="container">
+				<div class="eight columns">Blog powered by <a href="http://getpelican.com">Pelican</a></div>
+					<div class="eight columns">
+						<ul class="social-icons-footer">
+								<li>
+									<a href="https://github.com/gpuoti" class="tooltip top" title="Github">
+										<i class="icon-github"></i>
+									</a>
+								</li>
+								<li>
+									<a href="http://www.linkedin.com/pub/giuseppe-puoti/2b/b37/748" class="tooltip top" title="Linkedin">
+										<i class="icon-linkedin"></i>
+									</a>
+								</li>
+							<li><a href="/None" class="tooltip top" title="RSS"><i class="icon-rss"></i></a></li>
+						</ul>
+					</div>
+			</div>
+			<!-- Container / End -->
+		</div>
+		<!-- Footer Bottom / End -->
+		
+	<!-- Javascripts -->
+	<script src="/theme/js/jquery.min.js"></script>
 <script type="text/javascript">
     var disqus_shortname = 'codernotepad';
     (function () {
         var s = document.createElement('script'); s.async = true;
         s.type = 'text/javascript';
-        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
         (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
     }());
 </script>
-  <script src="http://gpuoti.github.io/theme/js/libs/jquery-1.9.1.min.js"></script>
-  <script src="http://gpuoti.github.io/theme/js/libs/gumby.min.js"></script>
-  <script src="http://gpuoti.github.io/theme/js/plugins.js"></script>
-</body>
+	</body>
 </html>

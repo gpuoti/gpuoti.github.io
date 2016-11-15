@@ -1,86 +1,125 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
 <html lang="en">
-<head>
-
-        <title>A convenient approch for feature extractor</title>
-        <meta charset="utf-8" />
-        <link href="http://gpuoti.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Full Atom Feed" />
-        <link href="http://gpuoti.github.io/feeds/cpp.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Categories Atom Feed" />
-
-
-        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
-        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
-
-        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/gumby.css" />
-        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/style.css" />
-        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/pygment.css" />
-
-        <script src="http://gpuoti.github.io/theme/js/libs/modernizr-2.6.2.min.js"></script>
+<!--<![endif]-->
+	<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="author" content="Giuseppe Puoti">
 
 
-              <script>
-                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-                ga('create', 'UA-56135244-1', 'codernotepad');
-                ga('send', 'pageview');
-
-              </script>
+        <title>Coder Notepad - A convenient approch for feature extractor</title>
 
 
-</head>
+        <!-- CSS -->
+        <link rel="stylesheet" href="/theme/css/style.css">
 
-<body id="index" class="home">
+        <!-- Custom CSS -->
+        	<link rel="stylesheet" href="/theme/css/colors/blue.css" id="colors">
 
-
-    <div class="container">
-
-        <div class="row">
-
-          <header id="banner" class="body">
-                  <h1><a href="http://gpuoti.github.io/">Coder Notepad <strong></strong></a></h1>
-          </header><!-- /#banner -->
-
-            <div id="navigation" class="navbar row">
-              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
-             
-              <ul class="columns">
-                <li><a href="http://gpuoti.github.io/">Home</a></li>
-
-                <li><a href="http://gpuoti.github.io/pages/resume.html">Resume</a></li>
-
-              </ul>
-            </div>
-
-<section id="content" class="body">
-
-   <div class="row">
-        <div class="eleven columns">
+        <!-- Code highlight color scheme -->
+            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
 
 
-            <header>
-              <h2 class="entry-title">
-                <a href="http://gpuoti.github.io/feature_extractor.html" rel="bookmark"
-                   title="Permalink to A convenient approch for feature extractor">A convenient approch for feature extractor</a></h2>
-           
-            </header>
-            <footer class="post-info">
-              <abbr class="published" title="2014-12-14T00:00:00+01:00">
-                dom 14 dicembre 2014
-              </abbr>
-              <address class="vcard author">By 
-                <a class="url fn" href="http://gpuoti.github.io/author/giuseppe-puoti.html"> Giuseppe Puoti</a>
-              </address>
-            </footer><!-- /.post-info -->
-            <div class="entry-content">
-              <p>When I've start seriously using STL algorithms, I suddenly realized how much I miss a way to define anonymous class or functions.
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+
+        <meta name="tags" contents="cpp" />
+        <meta name="tags" contents="functional" />
+        <meta name="tags" contents="stl" />
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="Coder Notepad">
+
+	<meta property="og:type" content="article">
+	<meta property="article:author" content="">
+	<meta property="og:url" content="/feature_extractor.html">
+	<meta property="og:title" content="A convenient approch for feature extractor">
+	<meta property="og:description" content="">
+	   <meta property="og:image" content="/images/guilherme-toti.jpg">
+	<meta property="article:published_time" content="2014-12-14 00:00:00+01:00">
+	</head>
+	<body>
+		<header id="header">
+			<!-- Container -->
+			<div class="container">
+				<!-- Logo / Mobile Menu -->
+				<div class="three columns">
+					<div id="logo">
+						<h1><a href="/">Coder Notepad</a></h1>
+					</div>
+				</div>
+				<!-- Navigation
+				================================================== -->
+				<div class="thirteen columns">
+					
+					<nav id="navigation" class="menu">
+						<ul id="responsive">
+
+							<li><a href="/">Home</a></li>
+
+
+							        <li><a href="/pages/resume.html">Resume</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+			<!-- Container / End -->
+		</header>
+		<!-- Header / End -->
+		
+		<div id="content-wrapper">
+			<section id="titlebar">
+				<!-- Container -->
+				<div class="container">
+					<div class="sixteen columns">						
+						<nav id="breadcrumbs">
+							<ul>
+								<li>You are here:</li>
+								<li><a href="/">Home</a></li>
+<li><a href="/category/cpp">cpp</a></li>
+<li>A convenient approch for feature extractor</li>
+							</ul>
+						</nav>
+					</div>
+
+				</div>
+				<!-- Container / End -->
+			</section>
+
+			<div class="container">
+	<div class="twelve alt columns">
+<article class="post" style="margin: 0; border: 0;">
+	
+	<div class="post-format">
+		<div class="circle"><i class="icon-pencil"></i><span></span></div>
+	</div>
+
+	<section class="post-content">
+
+		<header class="meta">
+			<h2><a href="/feature_extractor.html">A convenient approch for feature extractor</a></h2>
+			<ul>
+				<li>By <a href="/author/giuseppe-puoti.html">Giuseppe Puoti</a></li>
+				<li>dom 14 dicembre 2014</li>
+			</ul>
+		</header>
+
+		<p>When I've start seriously using STL algorithms, I suddenly realized how much I miss a way to define anonymous class or functions.
 For example, it is a quite common need to run an STL algorithm based on some of the prooperty of object a container is holding. In this case, you should have defined an unarary functor for each of the ordering methods and, of couse, every time you need another, another functor shall be written.</p>
 <p>Lambda functions have beed introduced in C++11 and i find that a conveniente and expressive solution but still you could not use C++11 (as I do) or you may want to not repeat yourself each time you call an STL algorithm to specify the functor to use as a lambda.</p>
 <p>I've written some article using ordering as my use case but, as the helper infrastructure I'm going to describe apply in many different cases, this time I'll use a search use case.</p>
 <p>Consider a situation with a container filled with a number of objects of type A defined as:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
   <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
   <span class="n">string</span> <span class="n">s</span><span class="p">;</span>
 
@@ -114,7 +153,7 @@ For example, it is a quite common need to run an STL algorithm based on some of 
 <h2>My naive default approch</h2>
 <p>My naive approch are actually two depending of the generality of the equality criteria I'm about to implement.
 If the criteria is common enough, I can expand the A class with an inner class defining the equality criteria such as:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
 
   <span class="p">...</span>
 
@@ -200,7 +239,7 @@ So, the matcher I'm about to write shall:</p>
 <p class="caption">The <em>Has</em> functor schematically. Red circles are template functions.</p>
 </div>
 <p>And here is the code, it is quite simple too!</p>
-<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">OP</span><span class="p">,</span> <span class="k">typename</span> <span class="n">AdaptorT</span><span class="p">,</span> <span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">OP</span><span class="p">,</span> <span class="k">typename</span> <span class="n">AdaptorT</span><span class="p">,</span> <span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
 <span class="k">struct</span> <span class="n">Has</span><span class="p">{</span>
   <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">t</span><span class="p">;</span>
   <span class="n">AdaptorT</span><span class="o">&amp;</span> <span class="n">adapt</span><span class="p">;</span>
@@ -227,7 +266,7 @@ So, the matcher I'm about to write shall:</p>
 </pre></div>
 <p>The additional template function is in place only to not specify all template parameters every each time you need to create a matcher object.
 Say you have a functor that retrieve the name from A objects using the <em>A::getName</em> method, to find objects named <em>foo</em> you can write something like:</p>
-<div class="highlight"><pre><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]){</span>
+<div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]){</span>
 
   <span class="p">...</span>
 
@@ -248,7 +287,7 @@ Say you have a functor that retrieve the name from A objects using the <em>A::ge
 What we still need is a way to automatically implement that kind of adaptors. If you was thinking to preprocessor macro, forget it, i'm not going to use macro as a morre expressive and safer solution is available using template metaprogramming.</p>
 <p>What I'm going to write is a template functor that will use any method to create and adaptor of the object on witch the method is defined to the type of the method return value.</p>
 <p>I called this adaptor generator <em>Prop</em> because it extract properties and here is how it looks like.</p>
-<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">R</span><span class="p">,</span> <span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="n">R</span> <span class="p">(</span><span class="n">T</span><span class="o">::*</span><span class="n">getMethod</span><span class="p">)</span> <span class="p">()</span> <span class="k">const</span> <span class="o">&gt;</span>
+<div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">R</span><span class="p">,</span> <span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="n">R</span> <span class="p">(</span><span class="n">T</span><span class="o">::*</span><span class="n">getMethod</span><span class="p">)</span> <span class="p">()</span> <span class="k">const</span> <span class="o">&gt;</span>
 <span class="k">struct</span> <span class="n">Prop</span> <span class="p">{</span>
 
   <span class="n">R</span> <span class="k">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">o</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
@@ -269,7 +308,7 @@ What we still need is a way to automatically implement that kind of adaptors. If
 </dl>
 </blockquote>
 <p>Once we have <em>Prop</em> in place, it makes really simple to write again the initial find operation like:</p>
-<div class="highlight"><pre><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]){</span>
+<div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]){</span>
   <span class="n">vector</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">;</span>
   <span class="n">A</span> <span class="n">a</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&quot;bar&quot;</span><span class="p">);</span>
   <span class="n">A</span> <span class="n">b</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s">&quot;foo&quot;</span><span class="p">);</span>
@@ -291,7 +330,7 @@ What we still need is a way to automatically implement that kind of adaptors. If
 <span class="p">}</span>
 </pre></div>
 <p>Apart from the expressiveness of the result it is simply reusable. Say, for example you want the first A with ID 7. All you must say to the compiler is that you want to use a different method:</p>
-<div class="highlight"><pre><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]){</span>
+<div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]){</span>
 
   <span class="p">...</span>
 
@@ -308,7 +347,7 @@ What we still need is a way to automatically implement that kind of adaptors. If
 <span class="p">}</span>
 </pre></div>
 <p>Even better you can change the evaluation criteria of the property. For example one may want to search for the first object that has its name lexicographically minor to <em>foo</em>. Here is how you can simly code it once the <em>has</em> function and the property extractor template adaptor are in place:</p>
-<div class="highlight"><pre>  ...
+<div class="highlight"><pre><span></span>  ...
 
   typedef Prop&lt;string, A, &amp;A::getName&gt; NameRetrieverT;
   NameRetrieverT name;
@@ -326,114 +365,81 @@ What we still need is a way to automatically implement that kind of adaptors. If
 </div>
 </div>
 
-            </div><!-- /.entry-content -->
-            <div class="comments">
-              <h3>Comments</h3>
-              <div id="disqus_thread"></div>
-              <script type="text/javascript">
-                var disqus_identifier = "feature_extractor.html";
-                (function() {
-                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'http://codernotepad.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                })();
-              </script>
-            </div>
+
+		    <div class="tags">
+		        <p>tags: <a href="/tag/cpp.html">cpp</a><a href="/tag/functional.html">functional</a><a href="/tag/stl.html">stl</a></p>
+		    </div>
+
+<div class="sharing">
+</div>
+<hr>
+		
+		    <div class="comments">
+		        <div id="disqus_thread"></div>
+		        <script type="text/javascript">
+		            var disqus_shortname = 'codernotepad';
+		            var disqus_identifier = 'feature_extractor.html';
+		            var disqus_url = '/feature_extractor.html';
+		            (function() {
+		                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		                dsq.src = '//codernotepad.disqus.com/embed.js';
+		                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		            })();
+		        </script>
+		        <noscript>Please enable JavaScript to view the comments.</noscript>
+		    </div>
+	</section>
+	<div class="clearfix"></div>
+
+</article>
+
+	</div>
+
+	<!-- Sidebar -->
+	<div class="four columns">
+
+		
+	</div>
+			</div>
+			<!-- Container / End -->
+		</div>
+		<!-- Content Wrapper / End -->
 
 
-        </div><!-- /.eleven.columns -->
-
-<div class="three columns">
-
-<h4>Pages</h4>
-
- <ul>
-      <li><a href="http://gpuoti.github.io/pages/resume.html">Resume</a></li>
-  </ul>
-
-<h4>Categories</h4>
-<ul>
-		<li><a href="http://gpuoti.github.io/category/cpp.html">cpp</a></li>
-		<li><a href="http://gpuoti.github.io/category/cpp-ide.html">cpp, ide</a></li>
-</ul>
-
-
-<h4>Tags</h4>
-	<ul>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/sort.html">sort</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/shared_ptr.html">shared_ptr</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/smart_ptr.html">smart_ptr</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/vs2008.html">vs2008</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/stl.html">stl</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/vs2015.html">vs2015</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/cpp11.html">cpp11</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/functional.html">functional</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/template.html">template</a></li>
-	    <li class="tag-1"><a href="http://gpuoti.github.io/tag/cpp.html">cpp</a></li>
-</ul>
-
-
-<nav class="widget">
-  <h4>Social</h4>
-  <ul>
-    <li><a href="https://github.com/gpuoti">Github</a></li>
-    <li><a href="http://www.linkedin.com/pub/giuseppe-puoti/2b/b37/748">Linkedin</a></li>
-  </ul>
-</nav>
-
-</div> </div><!-- /.row -->
-
-
-</section>
-
-       </div><!-- /.row -->
-    </div><!-- /.container -->
-
-
-       <div class="container.nopad bg">
-
-    
-        <footer id="credits" class="row">
-          <div class="seven columns left-center">
-
-                   <address id="about" class="vcard body">
-                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
-                    which takes great advantage of <a href="http://python.org">Python</a>.
-                    <br />
-                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
-                    </address>
-          </div>
-
-
-          <div class="seven columns">
-            <div class="row">
-              <ul class="socbtns">
-
-                <li><div class="btn primary"><a href="https://github.com/gpuoti" target="_blank">Github</a></div></li>
-
-                <li><div class="btn twitter"><a href="https://twitter.com/giuspuot" target="_blank">Twitter</a></div></li>
-
-
-
-              </ul>
-            </div>
-          </div>
-        </footer>
-
-    </div>
-
-
+		<div id="footer-bottom">
+			<!-- Container -->
+			<div class="container">
+				<div class="eight columns">Blog powered by <a href="http://getpelican.com">Pelican</a></div>
+					<div class="eight columns">
+						<ul class="social-icons-footer">
+								<li>
+									<a href="https://github.com/gpuoti" class="tooltip top" title="Github">
+										<i class="icon-github"></i>
+									</a>
+								</li>
+								<li>
+									<a href="http://www.linkedin.com/pub/giuseppe-puoti/2b/b37/748" class="tooltip top" title="Linkedin">
+										<i class="icon-linkedin"></i>
+									</a>
+								</li>
+							<li><a href="/None" class="tooltip top" title="RSS"><i class="icon-rss"></i></a></li>
+						</ul>
+					</div>
+			</div>
+			<!-- Container / End -->
+		</div>
+		<!-- Footer Bottom / End -->
+		
+	<!-- Javascripts -->
+	<script src="/theme/js/jquery.min.js"></script>
 <script type="text/javascript">
     var disqus_shortname = 'codernotepad';
     (function () {
         var s = document.createElement('script'); s.async = true;
         s.type = 'text/javascript';
-        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
         (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
     }());
 </script>
-  <script src="http://gpuoti.github.io/theme/js/libs/jquery-1.9.1.min.js"></script>
-  <script src="http://gpuoti.github.io/theme/js/libs/gumby.min.js"></script>
-  <script src="http://gpuoti.github.io/theme/js/plugins.js"></script>
-</body>
+	</body>
 </html>

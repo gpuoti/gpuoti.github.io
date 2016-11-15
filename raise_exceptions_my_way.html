@@ -1,0 +1,358 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+	<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="author" content="Giuseppe Puoti">
+
+
+        <title>Coder Notepad - Raise exceptions my way</title>
+
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="/theme/css/style.css">
+
+        <!-- Custom CSS -->
+        	<link rel="stylesheet" href="/theme/css/colors/blue.css" id="colors">
+
+        <!-- Code highlight color scheme -->
+            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
+
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+
+        <meta name="tags" contents="cpp" />
+        <meta name="tags" contents="cpp11" />
+        <meta name="tags" contents="stl" />
+        <meta name="tags" contents="exception" />
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="Coder Notepad">
+
+	<meta property="og:type" content="article">
+	<meta property="article:author" content="">
+	<meta property="og:url" content="/raise_exceptions_my_way.html">
+	<meta property="og:title" content="Raise exceptions my way">
+	<meta property="og:description" content="">
+	   <meta property="og:image" content="/images/guilherme-toti.jpg">
+	<meta property="article:published_time" content="2016-11-14 00:00:00+01:00">
+	</head>
+	<body>
+		<header id="header">
+			<!-- Container -->
+			<div class="container">
+				<!-- Logo / Mobile Menu -->
+				<div class="three columns">
+					<div id="logo">
+						<h1><a href="/">Coder Notepad</a></h1>
+					</div>
+				</div>
+				<!-- Navigation
+				================================================== -->
+				<div class="thirteen columns">
+					
+					<nav id="navigation" class="menu">
+						<ul id="responsive">
+
+							<li><a href="/">Home</a></li>
+
+
+							        <li><a href="/pages/resume.html">Resume</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+			<!-- Container / End -->
+		</header>
+		<!-- Header / End -->
+		
+		<div id="content-wrapper">
+			<section id="titlebar">
+				<!-- Container -->
+				<div class="container">
+					<div class="sixteen columns">						
+						<nav id="breadcrumbs">
+							<ul>
+								<li>You are here:</li>
+								<li><a href="/">Home</a></li>
+<li><a href="/category/cpp">cpp</a></li>
+<li>Raise exceptions my way</li>
+							</ul>
+						</nav>
+					</div>
+
+				</div>
+				<!-- Container / End -->
+			</section>
+
+			<div class="container">
+	<div class="twelve alt columns">
+<article class="post" style="margin: 0; border: 0;">
+	
+	<div class="post-format">
+		<div class="circle"><i class="icon-pencil"></i><span></span></div>
+	</div>
+
+	<section class="post-content">
+
+		<header class="meta">
+			<h2><a href="/raise_exceptions_my_way.html">Raise exceptions my way</a></h2>
+			<ul>
+				<li>By <a href="/author/giuseppe-puoti.html">Giuseppe Puoti</a></li>
+				<li>lun 14 novembre 2016</li>
+			</ul>
+		</header>
+
+		<p>As a programmer I want to be proud of what I write and I'm proud of those rare peace of code that I've written. In particular my aim is to be able to write a code that people can understand without dealing with all the details. A code which you can reason with on a logical layer, able to be also explained to non-programmers. A Code that seams not to be affected by those strange unexpected border cases that you need to deal with ugly special cases.
+Writing such a code is not really simple and it may become even more difficult once you variables like requirements and strict timing bring into the equation.</p>
+<p>To me as a reader, the most annoyng part of a code, the one that distract me the most, is error checking; I really hate block nesting and, error checking, is one of those thing that inject that kind of &quot;unnecessary&quot; complexity into our code.
+Exceptions help really much that way.</p>
+<p>I've found more than one person that oppose their use, arguing that they act as additional exit points or that they slow down your code. I don't want to write about the execution speed drop because <em>Modern C++ implementations reduce the overhead of using exceptions to a few percent (say, 3%) and that's compared to no error handling</em> <a class="footnote-reference" href="#id2" id="id1">[1]</a> , my real concern is write clear self documenting code.</p>
+<p>Say you have to check the parameters you receive into your function. In a simplicistic case you might have:</p>
+<div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">divide</span><span class="p">(</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">r</span><span class="p">){</span>
+  <span class="kt">bool</span> <span class="n">error_code</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">y</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">){</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">x</span><span class="o">/</span><span class="n">r</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">else</span><span class="p">{</span>
+    <span class="n">error_code</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="n">error_code</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+  <span class="kt">int</span> <span class="n">r</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">43</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+
+  <span class="k">if</span><span class="p">(</span><span class="n">divide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; / &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; = &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">else</span><span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;only Chuck Norris can divide by zero!&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+<p>This code block may become something like the following if you go for exceptions:</p>
+<div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">parameter_out_of_range</span><span class="p">{</span>
+  <span class="n">parameter_out_of_range</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span>
+  <span class="o">:</span> <span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="p">(</span><span class="s">&quot;unpermitted divider value&quot;</span><span class="p">)</span>
+  <span class="p">{</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">divide</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">throw</span> <span class="n">parameter_out_of_range</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+  <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">43</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+
+  <span class="k">try</span><span class="p">{</span>
+    <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">divide</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; / &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; = &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">catch</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">parameter_out_of_range</span> <span class="n">e</span><span class="p">){</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+<p>with the second version even with this simple function you have:</p>
+<blockquote>
+<dl class="docutils">
+<dt>better interface</dt>
+<dd>in the first version the integer division is not a binary function as one might expect</dd>
+<dt>less complexity</dt>
+<dd>you do not have to deal with the error_code value into the code of the function</dd>
+<dt>less noise</dt>
+<dd>better separation between functional code and error handling code</dd>
+</dl>
+</blockquote>
+<div class="section" id="a-nicer-technique">
+<h2>A nicer technique</h2>
+<p>I'm writing this article because I think there is some way to have even clearer code with a bit of syntax sugar. What I'd like to have is a way to declare my function is going to throw some kind of exception in some particular situation. This may appear not necessary in the simplicistic situation depicted as in the example, but think about of how much more checking you would be asked with your production code.</p>
+<div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">is_zero</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">){</span>
+  <span class="k">return</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">struct</span> <span class="n">parameter_out_of_range</span><span class="p">{</span>
+  <span class="n">parameter_out_of_range</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span>
+  <span class="o">:</span> <span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="p">(</span><span class="s">&quot;unpermitted divider value&quot;</span><span class="p">)</span>
+  <span class="p">{</span> <span class="p">}</span>
+<span class="p">};</span>
+
+
+<span class="kt">int</span> <span class="nf">divide</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">){</span>
+  <span class="n">raise</span> <span class="o">&lt;</span><span class="n">parameter_out_of_range</span><span class="o">&gt;</span><span class="p">(</span><span class="n">y</span><span class="p">).</span><span class="n">when</span><span class="p">(</span><span class="n">is_zero</span><span class="p">(</span><span class="n">y</span><span class="p">));</span>
+
+  <span class="k">return</span> <span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+  <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">43</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+
+  <span class="k">try</span><span class="p">{</span>
+    <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">divide</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; / &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; = &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">catch</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">exception</span> <span class="n">e</span><span class="p">){</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+<p>This is a pretty more self documented function reading only the code you can easily understand which is the beaviour of the function in case errors occur. It will:</p>
+<blockquote>
+<strong>raise</strong> a &lt;<strong>parameter_out_of_range</strong>&gt; exception on <strong>y</strong> when <strong>y is zero</strong></blockquote>
+</div>
+<div class="section" id="the-cost">
+<h2>The cost</h2>
+<p>Unfortunatly we don't achieve that expressiveness for free. My implementation of helpers that permit that code, requires the exception to be always constructed and eventually raised. This is an unaffordable cost, it is roughly 100x slower than the plan exception raise solution.
+Ok, so let's reorder things a bit to obtain this kind of code:</p>
+<div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">divide</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">){</span>
+  <span class="n">raise</span> <span class="o">&lt;</span><span class="n">parameter_out_of_range</span><span class="o">&gt;</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">when</span><span class="p">(</span><span class="n">is_zero</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+    <span class="p">.</span><span class="n">on</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>This has basically the same cost as the plain exception handling and has most of the benefits of the raise's frist implementation. It clarify that the divide function will:</p>
+<blockquote>
+<ul class="simple">
+<li><strong>raise</strong> the exception <strong>parameter_out_of_range</strong></li>
+<li><strong>when y is</strong> equal to <strong>zero</strong></li>
+<li>and it will raise the exception <strong>on y</strong> to give a better advice on what the problem is about.</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="the-implementation">
+<h2>The implementation</h2>
+<p><em>raise</em> is a simple struct whose only job is bind the type of exception we will eventually raise (and construct). The <em>when</em> method of <em>raise</em> is a factory method to construct an internal object that bind even the condition result and export the <em>on</em> method whitch finally is the one that actually construct the exception and throw. It is pretty simple, here is the complete code:</p>
+<div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">ExceptionT</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">raise</span> <span class="p">{</span>
+
+  <span class="k">struct</span> <span class="n">_when</span> <span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">_raise</span><span class="p">;</span>
+
+    <span class="n">_when</span><span class="p">(</span><span class="kt">bool</span> <span class="n">failing_predicate</span><span class="p">)</span>
+    <span class="o">:</span> <span class="n">_raise</span><span class="p">(</span><span class="n">failing_predicate</span><span class="p">)</span>
+    <span class="p">{</span> <span class="p">}</span>
+
+    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span> <span class="n">Ts</span><span class="o">&gt;</span>
+    <span class="kt">void</span> <span class="n">on</span><span class="p">(</span><span class="n">Ts</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">_raise</span><span class="p">)</span>
+        <span class="k">throw</span> <span class="n">ExceptionT</span><span class="p">(</span><span class="n">args</span><span class="p">...);</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+
+  <span class="n">_when</span> <span class="nf">when</span><span class="p">(</span><span class="kt">bool</span> <span class="n">failing_predicate</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">_when</span><span class="p">(</span><span class="n">failing_predicate</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="p">};</span>
+</pre></div>
+<p>Using variadic template it is possible to have this simple implementation and yet be able to construct any type of exception with any number of parameters.</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>from <a class="reference external" href="https://isocpp.org/wiki/faq/exceptions">https://isocpp.org/wiki/faq/exceptions</a></td></tr>
+</tbody>
+</table>
+</div>
+
+
+		    <div class="tags">
+		        <p>tags: <a href="/tag/cpp.html">cpp</a><a href="/tag/cpp11.html">cpp11</a><a href="/tag/stl.html">stl</a><a href="/tag/exception.html">exception</a></p>
+		    </div>
+
+<div class="sharing">
+</div>
+<hr>
+		
+		    <div class="comments">
+		        <div id="disqus_thread"></div>
+		        <script type="text/javascript">
+		            var disqus_shortname = 'codernotepad';
+		            var disqus_identifier = 'raise_exceptions_my_way.html';
+		            var disqus_url = '/raise_exceptions_my_way.html';
+		            (function() {
+		                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		                dsq.src = '//codernotepad.disqus.com/embed.js';
+		                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		            })();
+		        </script>
+		        <noscript>Please enable JavaScript to view the comments.</noscript>
+		    </div>
+	</section>
+	<div class="clearfix"></div>
+
+</article>
+
+	</div>
+
+	<!-- Sidebar -->
+	<div class="four columns">
+
+		
+	</div>
+			</div>
+			<!-- Container / End -->
+		</div>
+		<!-- Content Wrapper / End -->
+
+
+		<div id="footer-bottom">
+			<!-- Container -->
+			<div class="container">
+				<div class="eight columns">Blog powered by <a href="http://getpelican.com">Pelican</a></div>
+					<div class="eight columns">
+						<ul class="social-icons-footer">
+								<li>
+									<a href="https://github.com/gpuoti" class="tooltip top" title="Github">
+										<i class="icon-github"></i>
+									</a>
+								</li>
+								<li>
+									<a href="http://www.linkedin.com/pub/giuseppe-puoti/2b/b37/748" class="tooltip top" title="Linkedin">
+										<i class="icon-linkedin"></i>
+									</a>
+								</li>
+							<li><a href="/None" class="tooltip top" title="RSS"><i class="icon-rss"></i></a></li>
+						</ul>
+					</div>
+			</div>
+			<!-- Container / End -->
+		</div>
+		<!-- Footer Bottom / End -->
+		
+	<!-- Javascripts -->
+	<script src="/theme/js/jquery.min.js"></script>
+<script type="text/javascript">
+    var disqus_shortname = 'codernotepad';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+	</body>
+</html>

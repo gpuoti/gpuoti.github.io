@@ -1,81 +1,120 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
 <html lang="en">
-<head>
-
-        <title>smarter pointers</title>
-        <meta charset="utf-8" />
-        <link href="http://gpuoti.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Full Atom Feed" />
-        <link href="http://gpuoti.github.io/feeds/cpp.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Categories Atom Feed" />
-
-
-        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
-        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
-
-        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/gumby.css" />
-        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/style.css" />
-        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/pygment.css" />
-
-        <script src="http://gpuoti.github.io/theme/js/libs/modernizr-2.6.2.min.js"></script>
+<!--<![endif]-->
+	<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="author" content="Giuseppe Puoti">
 
 
-              <script>
-                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-                ga('create', 'UA-56135244-1', 'codernotepad');
-                ga('send', 'pageview');
-
-              </script>
+        <title>Coder Notepad - smarter pointers</title>
 
 
-</head>
+        <!-- CSS -->
+        <link rel="stylesheet" href="/theme/css/style.css">
 
-<body id="index" class="home">
+        <!-- Custom CSS -->
+        	<link rel="stylesheet" href="/theme/css/colors/blue.css" id="colors">
 
-
-    <div class="container">
-
-        <div class="row">
-
-          <header id="banner" class="body">
-                  <h1><a href="http://gpuoti.github.io/">Coder Notepad <strong></strong></a></h1>
-          </header><!-- /#banner -->
-
-            <div id="navigation" class="navbar row">
-              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
-             
-              <ul class="columns">
-                <li><a href="http://gpuoti.github.io/">Home</a></li>
-
-                <li><a href="http://gpuoti.github.io/pages/resume.html">Resume</a></li>
-
-              </ul>
-            </div>
-
-<section id="content" class="body">
-
-   <div class="row">
-        <div class="eleven columns">
+        <!-- Code highlight color scheme -->
+            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
 
 
-            <header>
-              <h2 class="entry-title">
-                <a href="http://gpuoti.github.io/smarter_ptr.html" rel="bookmark"
-                   title="Permalink to smarter pointers">smarter pointers</a></h2>
-           
-            </header>
-            <footer class="post-info">
-              <abbr class="published" title="2014-03-26T00:00:00+01:00">
-                mer 26 marzo 2014
-              </abbr>
-              <address class="vcard author">By 
-                <a class="url fn" href="http://gpuoti.github.io/author/giuseppe-puoti.html"> Giuseppe Puoti</a>
-              </address>
-            </footer><!-- /.post-info -->
-            <div class="entry-content">
-              <p>In a previous article, I've start discussing about a Smart pointers implementation that aims to let me use C++ as a higher level language with some minimal automatic garbage collection functionality.
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+
+        <meta name="tags" contents="cpp" />
+        <meta name="tags" contents="smart_ptr" />
+        <meta name="tags" contents="shared_ptr" />
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="Coder Notepad">
+
+	<meta property="og:type" content="article">
+	<meta property="article:author" content="">
+	<meta property="og:url" content="/smarter_ptr.html">
+	<meta property="og:title" content="smarter pointers">
+	<meta property="og:description" content="">
+	   <meta property="og:image" content="/images/guilherme-toti.jpg">
+	<meta property="article:published_time" content="2014-03-26 00:00:00+01:00">
+	</head>
+	<body>
+		<header id="header">
+			<!-- Container -->
+			<div class="container">
+				<!-- Logo / Mobile Menu -->
+				<div class="three columns">
+					<div id="logo">
+						<h1><a href="/">Coder Notepad</a></h1>
+					</div>
+				</div>
+				<!-- Navigation
+				================================================== -->
+				<div class="thirteen columns">
+					
+					<nav id="navigation" class="menu">
+						<ul id="responsive">
+
+							<li><a href="/">Home</a></li>
+
+
+							        <li><a href="/pages/resume.html">Resume</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+			<!-- Container / End -->
+		</header>
+		<!-- Header / End -->
+		
+		<div id="content-wrapper">
+			<section id="titlebar">
+				<!-- Container -->
+				<div class="container">
+					<div class="sixteen columns">						
+						<nav id="breadcrumbs">
+							<ul>
+								<li>You are here:</li>
+								<li><a href="/">Home</a></li>
+<li><a href="/category/cpp">cpp</a></li>
+<li>smarter pointers</li>
+							</ul>
+						</nav>
+					</div>
+
+				</div>
+				<!-- Container / End -->
+			</section>
+
+			<div class="container">
+	<div class="twelve alt columns">
+<article class="post" style="margin: 0; border: 0;">
+	
+	<div class="post-format">
+		<div class="circle"><i class="icon-pencil"></i><span></span></div>
+	</div>
+
+	<section class="post-content">
+
+		<header class="meta">
+			<h2><a href="/smarter_ptr.html">smarter pointers</a></h2>
+			<ul>
+				<li>By <a href="/author/giuseppe-puoti.html">Giuseppe Puoti</a></li>
+				<li>mer 26 marzo 2014</li>
+			</ul>
+		</header>
+
+		<p>In a previous article, I've start discussing about a Smart pointers implementation that aims to let me use C++ as a higher level language with some minimal automatic garbage collection functionality.
 I know that someone will disagree with this approach and also I quite agree with ones that recommend to use Java (or C# or whatever) if it is what you want or what you need, but, sometime you simple can't get what you want or what will possibly be the best choice.</p>
 <p>So i still find some good reasons that make me say it's useful to prepare some facilities that helps me use C++ in a simple, less error prone, and more productive way.</p>
 <dl class="docutils">
@@ -91,7 +130,7 @@ I know that someone will disagree with this approach and also I quite agree with
 <h2>adding inheritance capabilities</h2>
 <p>A strong limitation of the implementation discussed last time, is the unavailability of upcast and polymorphic behavior of my implementation of smart pointers.
 So, let start make the pointers smarter with a test. I'll write them using <em>gtest</em>.</p>
-<div class="highlight"><pre><span class="n">TEST</span><span class="p">(</span><span class="n">smart_derived</span><span class="p">,</span> <span class="n">assignToSuperclassWrapper</span><span class="p">){</span>
+<div class="highlight"><pre><span></span><span class="n">TEST</span><span class="p">(</span><span class="n">smart_derived</span><span class="p">,</span> <span class="n">assignToSuperclassWrapper</span><span class="p">){</span>
     <span class="n">Object</span> <span class="n">o2</span><span class="p">;</span>
     <span class="p">{</span>
             <span class="n">Derived</span> <span class="n">o1</span> <span class="o">=</span> <span class="n">SmartCreate</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">&gt;</span><span class="p">();</span>
@@ -102,7 +141,7 @@ So, let start make the pointers smarter with a test. I'll write them using <em>g
 </pre></div>
 <p>With the old implementation of smart pointers this would not work, instead the application will crash with a segmentation fault because of an wrong reference counting.
 In fact only references with the same type of the actually created object were taken into account. Do you remember we had a static map...</p>
-<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
 <span class="k">class</span> <span class="nc">Smart</span> <span class="p">{</span>
 <span class="k">static</span> <span class="n">map</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">counters</span><span class="p">;</span>
 
@@ -113,7 +152,7 @@ In fact only references with the same type of the actually created object were t
 <p>What we must do is count any reference to an object regardless of its type. So we will have only one reference counter table shared by all reference counter type.
 Because i don't like to have variables at global scope (ok, static variables are global too but i like them more ^_^ ) I've introduced a superclass that all smart ptr classes derive from that will do the job of reference counting and deallocating object when required.</p>
 <p>I've chosen <em>Smarty</em> as a cool name for my smarter pointers. So the superclass of all the <em>Smarty</em> template class instances, will be <em>Smarties</em>.</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Smarties</span><span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Smarties</span><span class="p">{</span>
 <span class="k">protected</span><span class="o">:</span>
     <span class="k">static</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">*</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">counters</span><span class="p">;</span>
 
@@ -149,7 +188,7 @@ Because i don't like to have variables at global scope (ok, static variables are
 <div class="section" id="the-smarty-implementation">
 <h2>The <em>Smarty</em> implementation</h2>
 <p>It is quite similar to the one of my old <em>Smart</em> objects. But I've added some methods to let implicit upcast work as you could expect. Here follows an extract.</p>
-<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
 <span class="k">class</span> <span class="nc">Smarty</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Smarties</span> <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
         <span class="k">typedef</span> <span class="n">T</span> <span class="n">wrappedType</span><span class="p">;</span>
@@ -199,7 +238,7 @@ Because i don't like to have variables at global scope (ok, static variables are
 <p>I have some private helper methods and the old assignment operator. I will discuss later why still have that assignment.</p>
 <p>But <em>Smarty</em> has more capabilities. Because of its template assignment method, any <em>Smarty</em> wrapper that is constructed around something that is assignable to an object of the type wrapped by the actual <em>Smarty</em>, is assignable to the <em>Smarty</em> wrapper in turn.</p>
 <p>The only assignment operator makes te test written on top of this post pass but not the following one.</p>
-<div class="highlight"><pre><span class="n">TEST</span><span class="p">(</span><span class="n">smart_derived</span><span class="p">,</span> <span class="n">assignToSuperclassWrapper</span><span class="p">){</span>
+<div class="highlight"><pre><span></span><span class="n">TEST</span><span class="p">(</span><span class="n">smart_derived</span><span class="p">,</span> <span class="n">assignToSuperclassWrapper</span><span class="p">){</span>
     <span class="n">Object</span> <span class="n">o2</span> <span class="o">=</span> <span class="n">SmartCreate</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">&gt;</span><span class="p">();</span>
     <span class="p">{</span>
             <span class="n">Derived</span> <span class="n">o1</span> <span class="o">=</span> <span class="n">SmartCreate</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">&gt;</span><span class="p">();</span>
@@ -213,7 +252,7 @@ Because i don't like to have variables at global scope (ok, static variables are
 <div class="section" id="about-the-old-assignment">
 <h2>about the old assignment</h2>
 <p>It is still not clear to me why but, after having substituted the old assignment operator with the template one i started to no more pass the this test:</p>
-<div class="highlight"><pre>        Object o2;
+<div class="highlight"><pre><span></span>        Object o2;
         {
                 Object o1 = SmartCreate&lt;Object&gt;();
                 o1-&gt;set(&quot;foo&quot;);
@@ -226,114 +265,81 @@ Because i don't like to have variables at global scope (ok, static variables are
 <p>After some debug i've solved by mainteining the old assignment operator, but, to be honest, it is still not clear to me why this works.</p>
 </div>
 
-            </div><!-- /.entry-content -->
-            <div class="comments">
-              <h3>Comments</h3>
-              <div id="disqus_thread"></div>
-              <script type="text/javascript">
-                var disqus_identifier = "smarter_ptr.html";
-                (function() {
-                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'http://codernotepad.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                })();
-              </script>
-            </div>
+
+		    <div class="tags">
+		        <p>tags: <a href="/tag/cpp.html">cpp</a><a href="/tag/smart_ptr.html">smart_ptr</a><a href="/tag/shared_ptr.html">shared_ptr</a></p>
+		    </div>
+
+<div class="sharing">
+</div>
+<hr>
+		
+		    <div class="comments">
+		        <div id="disqus_thread"></div>
+		        <script type="text/javascript">
+		            var disqus_shortname = 'codernotepad';
+		            var disqus_identifier = 'smarter_ptr.html';
+		            var disqus_url = '/smarter_ptr.html';
+		            (function() {
+		                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		                dsq.src = '//codernotepad.disqus.com/embed.js';
+		                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		            })();
+		        </script>
+		        <noscript>Please enable JavaScript to view the comments.</noscript>
+		    </div>
+	</section>
+	<div class="clearfix"></div>
+
+</article>
+
+	</div>
+
+	<!-- Sidebar -->
+	<div class="four columns">
+
+		
+	</div>
+			</div>
+			<!-- Container / End -->
+		</div>
+		<!-- Content Wrapper / End -->
 
 
-        </div><!-- /.eleven.columns -->
-
-<div class="three columns">
-
-<h4>Pages</h4>
-
- <ul>
-      <li><a href="http://gpuoti.github.io/pages/resume.html">Resume</a></li>
-  </ul>
-
-<h4>Categories</h4>
-<ul>
-		<li><a href="http://gpuoti.github.io/category/cpp.html">cpp</a></li>
-		<li><a href="http://gpuoti.github.io/category/cpp-ide.html">cpp, ide</a></li>
-</ul>
-
-
-<h4>Tags</h4>
-	<ul>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/sort.html">sort</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/shared_ptr.html">shared_ptr</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/smart_ptr.html">smart_ptr</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/vs2008.html">vs2008</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/stl.html">stl</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/vs2015.html">vs2015</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/cpp11.html">cpp11</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/functional.html">functional</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/template.html">template</a></li>
-	    <li class="tag-1"><a href="http://gpuoti.github.io/tag/cpp.html">cpp</a></li>
-</ul>
-
-
-<nav class="widget">
-  <h4>Social</h4>
-  <ul>
-    <li><a href="https://github.com/gpuoti">Github</a></li>
-    <li><a href="http://www.linkedin.com/pub/giuseppe-puoti/2b/b37/748">Linkedin</a></li>
-  </ul>
-</nav>
-
-</div> </div><!-- /.row -->
-
-
-</section>
-
-       </div><!-- /.row -->
-    </div><!-- /.container -->
-
-
-       <div class="container.nopad bg">
-
-    
-        <footer id="credits" class="row">
-          <div class="seven columns left-center">
-
-                   <address id="about" class="vcard body">
-                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
-                    which takes great advantage of <a href="http://python.org">Python</a>.
-                    <br />
-                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
-                    </address>
-          </div>
-
-
-          <div class="seven columns">
-            <div class="row">
-              <ul class="socbtns">
-
-                <li><div class="btn primary"><a href="https://github.com/gpuoti" target="_blank">Github</a></div></li>
-
-                <li><div class="btn twitter"><a href="https://twitter.com/giuspuot" target="_blank">Twitter</a></div></li>
-
-
-
-              </ul>
-            </div>
-          </div>
-        </footer>
-
-    </div>
-
-
+		<div id="footer-bottom">
+			<!-- Container -->
+			<div class="container">
+				<div class="eight columns">Blog powered by <a href="http://getpelican.com">Pelican</a></div>
+					<div class="eight columns">
+						<ul class="social-icons-footer">
+								<li>
+									<a href="https://github.com/gpuoti" class="tooltip top" title="Github">
+										<i class="icon-github"></i>
+									</a>
+								</li>
+								<li>
+									<a href="http://www.linkedin.com/pub/giuseppe-puoti/2b/b37/748" class="tooltip top" title="Linkedin">
+										<i class="icon-linkedin"></i>
+									</a>
+								</li>
+							<li><a href="/None" class="tooltip top" title="RSS"><i class="icon-rss"></i></a></li>
+						</ul>
+					</div>
+			</div>
+			<!-- Container / End -->
+		</div>
+		<!-- Footer Bottom / End -->
+		
+	<!-- Javascripts -->
+	<script src="/theme/js/jquery.min.js"></script>
 <script type="text/javascript">
     var disqus_shortname = 'codernotepad';
     (function () {
         var s = document.createElement('script'); s.async = true;
         s.type = 'text/javascript';
-        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
         (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
     }());
 </script>
-  <script src="http://gpuoti.github.io/theme/js/libs/jquery-1.9.1.min.js"></script>
-  <script src="http://gpuoti.github.io/theme/js/libs/gumby.min.js"></script>
-  <script src="http://gpuoti.github.io/theme/js/plugins.js"></script>
-</body>
+	</body>
 </html>

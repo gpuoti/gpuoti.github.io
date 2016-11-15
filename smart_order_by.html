@@ -1,81 +1,120 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
 <html lang="en">
-<head>
-
-        <title>smart ordering definition</title>
-        <meta charset="utf-8" />
-        <link href="http://gpuoti.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Full Atom Feed" />
-        <link href="http://gpuoti.github.io/feeds/cpp.atom.xml" type="application/atom+xml" rel="alternate" title="Coder Notepad Categories Atom Feed" />
-
-
-        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
-        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
-
-        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/gumby.css" />
-        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/style.css" />
-        <link rel="stylesheet" type="text/css" href="http://gpuoti.github.io/theme/pygment.css" />
-
-        <script src="http://gpuoti.github.io/theme/js/libs/modernizr-2.6.2.min.js"></script>
+<!--<![endif]-->
+	<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="author" content="Giuseppe Puoti">
 
 
-              <script>
-                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-                ga('create', 'UA-56135244-1', 'codernotepad');
-                ga('send', 'pageview');
-
-              </script>
+        <title>Coder Notepad - smart ordering definition</title>
 
 
-</head>
+        <!-- CSS -->
+        <link rel="stylesheet" href="/theme/css/style.css">
 
-<body id="index" class="home">
+        <!-- Custom CSS -->
+        	<link rel="stylesheet" href="/theme/css/colors/blue.css" id="colors">
 
-
-    <div class="container">
-
-        <div class="row">
-
-          <header id="banner" class="body">
-                  <h1><a href="http://gpuoti.github.io/">Coder Notepad <strong></strong></a></h1>
-          </header><!-- /#banner -->
-
-            <div id="navigation" class="navbar row">
-              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
-             
-              <ul class="columns">
-                <li><a href="http://gpuoti.github.io/">Home</a></li>
-
-                <li><a href="http://gpuoti.github.io/pages/resume.html">Resume</a></li>
-
-              </ul>
-            </div>
-
-<section id="content" class="body">
-
-   <div class="row">
-        <div class="eleven columns">
+        <!-- Code highlight color scheme -->
+            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
 
 
-            <header>
-              <h2 class="entry-title">
-                <a href="http://gpuoti.github.io/smart_order_by.html" rel="bookmark"
-                   title="Permalink to smart ordering definition">smart ordering definition</a></h2>
-           
-            </header>
-            <footer class="post-info">
-              <abbr class="published" title="2014-10-12T00:00:00+02:00">
-                dom 12 ottobre 2014
-              </abbr>
-              <address class="vcard author">By 
-                <a class="url fn" href="http://gpuoti.github.io/author/giuseppe-puoti.html"> Giuseppe Puoti</a>
-              </address>
-            </footer><!-- /.post-info -->
-            <div class="entry-content">
-              <p>Recently I've realized i was not really improving my programming capabilities. Because i work with c++, it seeamed natural to me try to study some advanced concepts and techniques. At the end, if they pay me to do that, I'm supposed to have an advanced understanding or, at least, I should work hard to have it.
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+
+        <meta name="tags" contents="cpp" />
+        <meta name="tags" contents="template" />
+        <meta name="tags" contents="sort" />
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="Coder Notepad">
+
+	<meta property="og:type" content="article">
+	<meta property="article:author" content="">
+	<meta property="og:url" content="/smart_order_by.html">
+	<meta property="og:title" content="smart ordering definition">
+	<meta property="og:description" content="">
+	   <meta property="og:image" content="/images/guilherme-toti.jpg">
+	<meta property="article:published_time" content="2014-10-12 00:00:00+02:00">
+	</head>
+	<body>
+		<header id="header">
+			<!-- Container -->
+			<div class="container">
+				<!-- Logo / Mobile Menu -->
+				<div class="three columns">
+					<div id="logo">
+						<h1><a href="/">Coder Notepad</a></h1>
+					</div>
+				</div>
+				<!-- Navigation
+				================================================== -->
+				<div class="thirteen columns">
+					
+					<nav id="navigation" class="menu">
+						<ul id="responsive">
+
+							<li><a href="/">Home</a></li>
+
+
+							        <li><a href="/pages/resume.html">Resume</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+			<!-- Container / End -->
+		</header>
+		<!-- Header / End -->
+		
+		<div id="content-wrapper">
+			<section id="titlebar">
+				<!-- Container -->
+				<div class="container">
+					<div class="sixteen columns">						
+						<nav id="breadcrumbs">
+							<ul>
+								<li>You are here:</li>
+								<li><a href="/">Home</a></li>
+<li><a href="/category/cpp">cpp</a></li>
+<li>smart ordering definition</li>
+							</ul>
+						</nav>
+					</div>
+
+				</div>
+				<!-- Container / End -->
+			</section>
+
+			<div class="container">
+	<div class="twelve alt columns">
+<article class="post" style="margin: 0; border: 0;">
+	
+	<div class="post-format">
+		<div class="circle"><i class="icon-pencil"></i><span></span></div>
+	</div>
+
+	<section class="post-content">
+
+		<header class="meta">
+			<h2><a href="/smart_order_by.html">smart ordering definition</a></h2>
+			<ul>
+				<li>By <a href="/author/giuseppe-puoti.html">Giuseppe Puoti</a></li>
+				<li>dom 12 ottobre 2014</li>
+			</ul>
+		</header>
+
+		<p>Recently I've realized i was not really improving my programming capabilities. Because i work with c++, it seeamed natural to me try to study some advanced concepts and techniques. At the end, if they pay me to do that, I'm supposed to have an advanced understanding or, at least, I should work hard to have it.
 These reasonings leaded me to buy a new book that could introduce me to the dark art of template metaprogramming.</p>
 <p>I've appreciated yet the Alessandrescu's way of write and explain so my book of choise was <em>Modern C++ Design: Generic Programming and Design Patterns Applied</em>. I really suggest you to buy it because it has been for me a wonderfull and it is slowly changing my approch to code.</p>
 <div class="section" id="the-first-very-usefull-pattern">
@@ -94,7 +133,7 @@ That is, it will let you extract some of the algorithm behavior to be selected n
 <li>age</li>
 </ul>
 <p>Here is the code:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Person</span> <span class="p">{</span>
         <span class="n">string</span> <span class="n">name</span><span class="p">,</span> <span class="n">surname</span> <span class="p">;</span>
         <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
 
@@ -114,7 +153,7 @@ That is, it will let you extract some of the algorithm behavior to be selected n
 </pre></div>
 <p>Suppose, some reason another, you want to order lists of people by different criteria in different part of you code, what I find a good solution is to implement some internal functor objects that implements different ordering functions.
 So, the Person class, it will enriched with:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Person</span> <span class="p">{</span>
         <span class="p">...</span>
 <span class="k">public</span><span class="o">:</span>
         <span class="k">struct</span> <span class="n">OrderByName</span> <span class="p">{</span>
@@ -139,7 +178,7 @@ So, the Person class, it will enriched with:</p>
 <span class="p">};</span>
 </pre></div>
 <p>At this point you can sort (or operate on them in some other way requiring an ordering function) Person objects like this:</p>
-<div class="highlight"><pre><span class="n">vector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span> <span class="n">people</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span> <span class="n">people</span><span class="p">;</span>
 <span class="n">people</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Jill&quot;</span><span class="p">,</span> <span class="s">&quot;Evans&quot;</span><span class="p">,</span> <span class="mi">29</span><span class="p">));</span>
 <span class="n">people</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Jill&quot;</span><span class="p">,</span> <span class="s">&quot;Evans&quot;</span><span class="p">,</span> <span class="mi">23</span><span class="p">));</span>
 <span class="n">people</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Jill&quot;</span><span class="p">,</span> <span class="s">&quot;Doe&quot;</span><span class="p">,</span> <span class="mi">31</span><span class="p">));</span>
@@ -190,7 +229,7 @@ You could have:</p>
 <p>The solution I want to propose require the writing of an ordering functor whose only purpose is to combine two other ordering functor types.</p>
 <p>So, <em>SmartOrderBy</em> is a functor type that depends on two other functor types that evaluates to true if the first object is less then the second when considering the first functor or, if they are equal for the first, the first object is less then the second when considering the second ordering functor.</p>
 <p>Consider for example you want to order a list of people by their surname and, in case of same surname, by their name. You could write just another functor OrderBySurnameAndName or use <em>SmartOrderBy</em> like in the following exaple:</p>
-<div class="highlight"><pre><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Ordering by surnames then names...&quot;</span><span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Ordering by surnames then names...&quot;</span><span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
 <span class="n">sort</span><span class="p">(</span><span class="n">people</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">people</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">SmartOrderBy</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">::</span><span class="n">OrderBySurname</span><span class="p">,</span> <span class="n">Person</span><span class="o">::</span><span class="n">OrderByName</span><span class="o">&gt;</span><span class="p">());</span>
 
 <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Ordered dataset:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
@@ -209,7 +248,7 @@ Jill Evans [age: 29]
 Jill Evans [age: 23]
 </pre>
 <p>Of course you may want to see the <em>SmartOrderBy</em> definition, and here is how it looks like:</p>
-<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Ord1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">Ord2</span><span class="o">&gt;</span>
+<div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Ord1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">Ord2</span><span class="o">&gt;</span>
 <span class="k">struct</span> <span class="n">SmartOrderBy</span><span class="p">{</span>
 <span class="k">private</span><span class="o">:</span>
         <span class="n">Ord1</span> <span class="n">o1</span><span class="p">;</span>
@@ -238,7 +277,7 @@ The <em>operator()</em> is a template method itself so that the resulting functo
 <blockquote>
 if <em>obj1 &gt;= obj2</em> and <em>obj2 &gt;= obj1</em> then <em>obj1 == obj2</em>.</blockquote>
 <p>SmartOrderBy template instantiation may be a component functor type itself so that you can sort a list of people by their surnames and then, in case of same surname by their names and then, in case of same name and surname, by their age, as follow:</p>
-<div class="highlight"><pre><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Ordering by surnames then names then age...&quot;</span><span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Ordering by surnames then names then age...&quot;</span><span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
 <span class="k">typedef</span> <span class="n">SmartOrderBy</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">::</span><span class="n">OrderBySurname</span><span class="p">,</span> <span class="n">Person</span><span class="o">::</span><span class="n">OrderByName</span><span class="o">&gt;</span> <span class="n">OrderByName</span><span class="p">;</span>          <span class="c1">// a temporary shortcut</span>
 <span class="n">sort</span><span class="p">(</span><span class="n">people</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">people</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">SmartOrderBy</span><span class="o">&lt;</span><span class="n">OrderByName</span><span class="p">,</span> <span class="n">Person</span><span class="o">::</span><span class="n">OrderByAge</span><span class="o">&gt;</span><span class="p">());</span>
 
@@ -258,7 +297,7 @@ Jill Evans [age: 23]
 Jill Evans [age: 29]
 </pre>
 <p>The wonderfull think of this approch is that, if you need to order in a slightly different way, for example by age and then by surname and then by name you can implement it as simple as:</p>
-<div class="highlight"><pre><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Ordering by age then surnames then names...&quot;</span><span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Ordering by age then surnames then names...&quot;</span><span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
 <span class="k">typedef</span> <span class="n">SmartOrderBy</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">::</span><span class="n">OrderBySurname</span><span class="p">,</span> <span class="n">Person</span><span class="o">::</span><span class="n">OrderByName</span><span class="o">&gt;</span> <span class="n">OrderByName</span><span class="p">;</span>          <span class="c1">// a temporary shortcut</span>
 <span class="n">sort</span><span class="p">(</span><span class="n">people</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">people</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">SmartOrderBy</span><span class="o">&lt;*</span><span class="n">Person</span><span class="o">::</span><span class="n">OrderByAge</span><span class="p">,</span> <span class="n">OrderByName</span><span class="o">*&gt;</span><span class="p">());</span>
 
@@ -274,114 +313,81 @@ Jill Evans [age: 29]
 <p>Hope you'll find this usefull, I want to close this article here to not overcharge it, but here come a quite natural question, what if we old the list of objects (people) as a list of pointers, can we still use this approch? I'll write some more on the argument soon, stay tuned!</p>
 </div>
 
-            </div><!-- /.entry-content -->
-            <div class="comments">
-              <h3>Comments</h3>
-              <div id="disqus_thread"></div>
-              <script type="text/javascript">
-                var disqus_identifier = "smart_order_by.html";
-                (function() {
-                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'http://codernotepad.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                })();
-              </script>
-            </div>
+
+		    <div class="tags">
+		        <p>tags: <a href="/tag/cpp.html">cpp</a><a href="/tag/template.html">template</a><a href="/tag/sort.html">sort</a></p>
+		    </div>
+
+<div class="sharing">
+</div>
+<hr>
+		
+		    <div class="comments">
+		        <div id="disqus_thread"></div>
+		        <script type="text/javascript">
+		            var disqus_shortname = 'codernotepad';
+		            var disqus_identifier = 'smart_order_by.html';
+		            var disqus_url = '/smart_order_by.html';
+		            (function() {
+		                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		                dsq.src = '//codernotepad.disqus.com/embed.js';
+		                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		            })();
+		        </script>
+		        <noscript>Please enable JavaScript to view the comments.</noscript>
+		    </div>
+	</section>
+	<div class="clearfix"></div>
+
+</article>
+
+	</div>
+
+	<!-- Sidebar -->
+	<div class="four columns">
+
+		
+	</div>
+			</div>
+			<!-- Container / End -->
+		</div>
+		<!-- Content Wrapper / End -->
 
 
-        </div><!-- /.eleven.columns -->
-
-<div class="three columns">
-
-<h4>Pages</h4>
-
- <ul>
-      <li><a href="http://gpuoti.github.io/pages/resume.html">Resume</a></li>
-  </ul>
-
-<h4>Categories</h4>
-<ul>
-		<li><a href="http://gpuoti.github.io/category/cpp.html">cpp</a></li>
-		<li><a href="http://gpuoti.github.io/category/cpp-ide.html">cpp, ide</a></li>
-</ul>
-
-
-<h4>Tags</h4>
-	<ul>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/sort.html">sort</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/shared_ptr.html">shared_ptr</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/smart_ptr.html">smart_ptr</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/vs2008.html">vs2008</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/stl.html">stl</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/vs2015.html">vs2015</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/cpp11.html">cpp11</a></li>
-	    <li class="tag-4"><a href="http://gpuoti.github.io/tag/functional.html">functional</a></li>
-	    <li class="tag-2"><a href="http://gpuoti.github.io/tag/template.html">template</a></li>
-	    <li class="tag-1"><a href="http://gpuoti.github.io/tag/cpp.html">cpp</a></li>
-</ul>
-
-
-<nav class="widget">
-  <h4>Social</h4>
-  <ul>
-    <li><a href="https://github.com/gpuoti">Github</a></li>
-    <li><a href="http://www.linkedin.com/pub/giuseppe-puoti/2b/b37/748">Linkedin</a></li>
-  </ul>
-</nav>
-
-</div> </div><!-- /.row -->
-
-
-</section>
-
-       </div><!-- /.row -->
-    </div><!-- /.container -->
-
-
-       <div class="container.nopad bg">
-
-    
-        <footer id="credits" class="row">
-          <div class="seven columns left-center">
-
-                   <address id="about" class="vcard body">
-                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
-                    which takes great advantage of <a href="http://python.org">Python</a>.
-                    <br />
-                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
-                    </address>
-          </div>
-
-
-          <div class="seven columns">
-            <div class="row">
-              <ul class="socbtns">
-
-                <li><div class="btn primary"><a href="https://github.com/gpuoti" target="_blank">Github</a></div></li>
-
-                <li><div class="btn twitter"><a href="https://twitter.com/giuspuot" target="_blank">Twitter</a></div></li>
-
-
-
-              </ul>
-            </div>
-          </div>
-        </footer>
-
-    </div>
-
-
+		<div id="footer-bottom">
+			<!-- Container -->
+			<div class="container">
+				<div class="eight columns">Blog powered by <a href="http://getpelican.com">Pelican</a></div>
+					<div class="eight columns">
+						<ul class="social-icons-footer">
+								<li>
+									<a href="https://github.com/gpuoti" class="tooltip top" title="Github">
+										<i class="icon-github"></i>
+									</a>
+								</li>
+								<li>
+									<a href="http://www.linkedin.com/pub/giuseppe-puoti/2b/b37/748" class="tooltip top" title="Linkedin">
+										<i class="icon-linkedin"></i>
+									</a>
+								</li>
+							<li><a href="/None" class="tooltip top" title="RSS"><i class="icon-rss"></i></a></li>
+						</ul>
+					</div>
+			</div>
+			<!-- Container / End -->
+		</div>
+		<!-- Footer Bottom / End -->
+		
+	<!-- Javascripts -->
+	<script src="/theme/js/jquery.min.js"></script>
 <script type="text/javascript">
     var disqus_shortname = 'codernotepad';
     (function () {
         var s = document.createElement('script'); s.async = true;
         s.type = 'text/javascript';
-        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
         (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
     }());
 </script>
-  <script src="http://gpuoti.github.io/theme/js/libs/jquery-1.9.1.min.js"></script>
-  <script src="http://gpuoti.github.io/theme/js/libs/gumby.min.js"></script>
-  <script src="http://gpuoti.github.io/theme/js/plugins.js"></script>
-</body>
+	</body>
 </html>
