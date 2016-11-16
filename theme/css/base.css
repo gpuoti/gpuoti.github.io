@@ -118,12 +118,12 @@
 	
 	img {
 		width: auto;
-		margin-top: 2em;
+		margin-top: 1em;
 		margin-bottom: 2.5em;
-           margin-right:2em;
-		border: 0;
+           margin-right: 2em;
+           border: 0;
 		-ms-interpolation-mode: bicubic;
-          float: left
+          float: left;
 	}
 
      div.figure img {
@@ -179,14 +179,15 @@
 		
 	h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { font-weight: inherit; }
 	h1 { font-size: 28px; line-height: 50px; }
-	h2 { font-size: 24px; line-height: 30px; }
-	h3 { font-size: 20px; line-height: 34px; }
+	h2 { font-size: 24px; line-height: 30px; margin-top: 30px; margin-bottom: 10px;}
+	h3 { font-size: 20px; line-height: 34px; margin-top: 3px; margin-bottom: 5px;}
 	h4 { font-size: 18px; line-height: 30px; }
 	h5 { font-size: 16px; line-height: 24px; }
 	h6 { font-size: 14px; line-height: 21px; }
 
-	p { margin: 0 0 15px 0; line-height: 24px;}
-	p img { margin: 0; }
+	p { margin: 0 0 7px 0; line-height: 1.55em;}
+	img p { margin-top: 10px; }
+	nav ul { margin: 0,0,0,0;}
 	p.lead { font-size: 21px; line-height: 27px; color: #777;  }
 
 	em { font-style: italic; }
@@ -208,7 +209,7 @@
 /* #Lists
 ================================================== */
 	ul, ol { margin: 0; }
-	ul { list-style: none outside; }
+	ul { list-style: none outside; padding-left:2em;}
 	ol { list-style: decimal; }
 	ol, ul.square, ul.circle, ul.disc { margin-left: 30px; }
 	ul.square { list-style: square outside; }
@@ -218,7 +219,7 @@
 	ol ol, ol ul {}
 	ul ul li, ul ol li,
 	ol ol li, ol ul li {}
-	li { line-height: 18px; }
+	li { line-height: 1.2em; margin-bottom: 7px; list-style-type: initial;}
 	ul.large li { line-height: 21px; }
 	li p { line-height: 21px; }
 

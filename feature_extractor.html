@@ -347,19 +347,21 @@ What we still need is a way to automatically implement that kind of adaptors. If
 <span class="p">}</span>
 </pre></div>
 <p>Even better you can change the evaluation criteria of the property. For example one may want to search for the first object that has its name lexicographically minor to <em>foo</em>. Here is how you can simly code it once the <em>has</em> function and the property extractor template adaptor are in place:</p>
-<div class="highlight"><pre><span></span>  ...
+<div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]){</span>
 
-  typedef Prop&lt;string, A, &amp;A::getName&gt; NameRetrieverT;
-  NameRetrieverT name;
+  <span class="p">...</span>
 
-  vector&lt;A&gt;::const_iterator x = find_if(
-    v.begin(), v.end(),
-    has(name, less&lt;string&gt;(), string(&quot;foo&quot;)
-  );
+  <span class="k">typedef</span> <span class="n">Prop</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">getName</span><span class="o">&gt;</span> <span class="n">NameRetrieverT</span><span class="p">;</span>
+  <span class="n">NameRetrieverT</span> <span class="n">name</span><span class="p">;</span>
 
-  return x != v.end();
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">x</span> <span class="o">=</span> <span class="n">find_if</span><span class="p">(</span>
+    <span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span>
+    <span class="n">has</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">less</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(),</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">)</span>
+  <span class="p">);</span>
 
-}
+  <span class="k">return</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+
+<span class="p">}</span>
 </pre></div>
 <p>Even if I'm not inventing nothing so new to real guru, I hope that this article can explain something new to programmers that want to learn use C++ at its full power like I am.</p>
 </div>

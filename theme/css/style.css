@@ -440,6 +440,9 @@
 	font-size: 13px;
 	margin-top: 27px;
 	font-weight: 500;
+	padding-left:0;
+	margin-bottom:5px;
+	margin-top:5px;
 }
 
 #breadcrumbs ul li {
@@ -2058,8 +2061,8 @@ html[xmlns] .slides {display: block;}
 ====================================================================== */
 .post {
 	padding: 0 0 40px 0;
-	margin: 0 0 40px 0;
-	border-bottom: 1px solid #f0f0f0;
+	margin: 0 0 10px 0;
+	border-bottom: 2px solid #f0f0f0;
 }
 
 .post-img img { border-radius: 3px; }
