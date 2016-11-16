@@ -126,6 +126,11 @@
           float: left
 	}
 
+     div.figure img {
+          float: none;
+     }
+
+
 	/* Flexible Embeds */
 	.embed {
 		position: relative;
