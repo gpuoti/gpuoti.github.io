@@ -1,0 +1,233 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+	<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="author" content="Giuseppe Puoti">
+
+
+        <title>Coder Notepad - Catch the advice</title>
+
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="/theme/css/style.css">
+
+        <!-- Custom CSS -->
+        	<link rel="stylesheet" href="/theme/css/colors/blue.css" id="colors">
+
+        <!-- Code highlight color scheme -->
+            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
+
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+
+        <meta name="tags" contents="cpp" />
+        <meta name="tags" contents="cpp11" />
+        <meta name="tags" contents="catch" />
+        <meta name="tags" contents="tdd" />
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="Coder Notepad">
+
+	<meta property="og:type" content="article">
+	<meta property="article:author" content="">
+	<meta property="og:url" content="/catch_linker_error_tip.html">
+	<meta property="og:title" content="Catch the advice">
+	<meta property="og:description" content="">
+	   <meta property="og:image" content="/images/guilherme-toti.jpg">
+	<meta property="article:published_time" content="2017-08-13 00:00:00+02:00">
+	</head>
+	<body>
+		<header id="header">
+			<!-- Container -->
+			<div class="container">
+				<!-- Logo / Mobile Menu -->
+				<div class="three columns">
+					<div id="logo">
+						<h1><a href="/">Coder Notepad</a></h1>
+					</div>
+				</div>
+				<!-- Navigation
+				================================================== -->
+				<div class="thirteen columns">
+					
+					<nav id="navigation" class="menu">
+						<ul id="responsive">
+
+							<li><a href="/">Home</a></li>
+
+
+							        <li><a href="/pages/resume.html">Resume</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+			<!-- Container / End -->
+		</header>
+		<!-- Header / End -->
+		
+		<div id="content-wrapper">
+			<section id="titlebar">
+				<!-- Container -->
+				<div class="container">
+					<div class="sixteen columns">						
+						<nav id="breadcrumbs">
+							<ul>
+								<li>You are here:</li>
+								<li><a href="/">Home</a></li>
+<li><a href="/category/cpp, tdd">cpp, tdd</a></li>
+<li>Catch the advice</li>
+							</ul>
+						</nav>
+					</div>
+
+				</div>
+				<!-- Container / End -->
+			</section>
+
+			<div class="container">
+	<div class="twelve alt columns">
+<article class="post" style="margin: 0; border: 0;">
+	
+	<div class="post-format">
+		<div class="circle"><i class="icon-pencil"></i><span></span></div>
+	</div>
+
+	<section class="post-content">
+
+		<header class="meta">
+			<h2><a href="/catch_linker_error_tip.html">Catch the advice</a></h2>
+			<ul>
+				<li>By <a href="/author/giuseppe-puoti.html">Giuseppe Puoti</a></li>
+				<li>dom 13 agosto 2017</li>
+			</ul>
+		</header>
+
+		<p>This will be a very short post to track a strange error message a got for two days from the linker while I was trying to modernize one of my first TDD project.
+The very short message is: Unless you have to provide your own main function the test arness and you are getting linker errors, check the <strong>CATCH_CONFIG_MAIN</strong> macro definition on first place, be sure it appear before the catch header file inclusion.</p>
+<div class="section" id="here-is-the-long-story">
+<h2>Here is the long story</h2>
+<p>I used <em>gtest + gmock</em> on first place but that framework has the relevant (to me) drawback to require quite a complex configuration of the test arness as it requires to make and link a couple of libs. Well, it is not a really big effort but I want a quick and simple setup for my test arness so that it can be done in minutes.
+My test framework of choise is Catch by Phill Nash, I think it is great cause:</p>
+<blockquote>
+<ul class="simple">
+<li>requires only a single header file into your test project</li>
+<li>has no limits to test names</li>
+<li>enables you write tests in BDD style</li>
+<li>doesn't requires cutting edge compiler</li>
+</ul>
+</blockquote>
+<p>The test project I was trying to convert, used <em>london school</em> style as you might expect by gmock involvement, but catch doesn't support for mock objects creation by itself. Therefore I sarted to find a quick and simple mock framework with not too much preprocessor magic involved.
+I found <em>FakeIt</em> and decided to give it a try as it also is a single header library and it apply explicitelly as a Catch companion.</p>
+</div>
+<div class="section" id="linker-complains">
+<h2>Linker complains</h2>
+<p>FakeIt comes with a single header version created on purpose for Catch integration, compiling the first test has gone like a breeze, but the liker complained about unresolved symbols.</p>
+<p>It was about:</p>
+<pre class="literal-block">
+public: __thiscall Catch::SourceLineInfo::SourceLineInfo(void)
+public: __thiscall Catch::SourceLineInfo::SourceLineInfo(char const *,unsigned int)
+public: __thiscall Catch::AutoReg::AutoReg(void (__cdecl*)(void),struct Catch::SourceLineInfo const &amp;,struct Catch::NameAndDesc const &amp;)
+public: __thiscall Catch::ResultBuilder::ResultBuilder(char const *,struct Catch::SourceLineInfo const &amp;,char const *,enum Catch::ResultDisposition::Flags,char const *)
+public: void __thiscall Catch::ResultBuilder::captureResult(enum Catch::ResultWas::OfType)
+public: void __thiscall Catch::ResultBuilder::react(void)
+</pre>
+<p>as you know, linker errors are a mess, this was just a selection.
+My first attent to solve was update to latest catch version but this didn't solve. Then started to search for the definitiions the linker complains about into the code and found them obscured by #ifdefs. Some further inquiry lead me to check for the <strong>CATCH_CONFIG_MAIN</strong> macro definition which was supposed to be defined to let Catch define a CLI interface for your test arness.
+That macro was not defined (my fail), simply defining it solved the linker problems.</p>
+</div>
+<div class="section" id="final-advice">
+<h2>Final advice</h2>
+<p>Unless you have to provide your own main function the test arness and you are getting linker errors, check the <strong>CATCH_CONFIG_MAIN</strong> macro definition on first place, be sure it appear before the catch header file inclusion.</p>
+</div>
+
+
+		    <div class="tags">
+		        <p>tags: <a href="/tag/cpp.html">cpp</a><a href="/tag/cpp11.html">cpp11</a><a href="/tag/catch.html">catch</a><a href="/tag/tdd.html">tdd</a></p>
+		    </div>
+
+<div class="sharing">
+</div>
+<hr>
+		
+		    <div class="comments">
+		        <div id="disqus_thread"></div>
+		        <script type="text/javascript">
+		            var disqus_shortname = 'codernotepad';
+		            var disqus_identifier = 'catch_linker_error_tip.html';
+		            var disqus_url = '/catch_linker_error_tip.html';
+		            (function() {
+		                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		                dsq.src = '//codernotepad.disqus.com/embed.js';
+		                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		            })();
+		        </script>
+		        <noscript>Please enable JavaScript to view the comments.</noscript>
+		    </div>
+	</section>
+	<div class="clearfix"></div>
+
+</article>
+
+	</div>
+
+	<!-- Sidebar -->
+	<div class="four columns">
+
+		
+	</div>
+			</div>
+			<!-- Container / End -->
+		</div>
+		<!-- Content Wrapper / End -->
+
+
+		<div id="footer-bottom">
+			<!-- Container -->
+			<div class="container">
+				<div class="eight columns">Blog powered by <a href="http://getpelican.com">Pelican</a></div>
+					<div class="eight columns">
+						<ul class="social-icons-footer">
+								<li>
+									<a href="https://github.com/gpuoti" class="tooltip top" title="Github">
+										<i class="icon-github"></i>
+									</a>
+								</li>
+								<li>
+									<a href="http://www.linkedin.com/pub/giuseppe-puoti/2b/b37/748" class="tooltip top" title="Linkedin">
+										<i class="icon-linkedin"></i>
+									</a>
+								</li>
+							<li><a href="/None" class="tooltip top" title="RSS"><i class="icon-rss"></i></a></li>
+						</ul>
+					</div>
+			</div>
+			<!-- Container / End -->
+		</div>
+		<!-- Footer Bottom / End -->
+		
+	<!-- Javascripts -->
+	<script src="/theme/js/jquery.min.js"></script>
+<script type="text/javascript">
+    var disqus_shortname = 'codernotepad';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+	</body>
+</html>
