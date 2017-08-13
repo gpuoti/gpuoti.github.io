@@ -115,12 +115,12 @@
 			</ul>
 		</header>
 
-		<p>This will be a very short post to track a strange error message a got for two days from the linker while I was trying to modernize one of my first TDD project.
-The very short message is: Unless you have to provide your own main function the test arness and you are getting linker errors, check the <strong>CATCH_CONFIG_MAIN</strong> macro definition on first place, be sure it appear before the catch header file inclusion.</p>
+		<p>This will be a very short post to trace my solution to a strange error message I had from the linker while I was trying to modernize one of my first TDD project.
+The very short message is: Unless you have to provide your own main function the test harness and you are getting linker errors, check the <strong>CATCH_CONFIG_MAIN</strong> macro definition on first place, be sure it appear before the catch header file inclusion.</p>
 <div class="section" id="here-is-the-long-story">
 <h2>Here is the long story</h2>
-<p>I used <em>gtest + gmock</em> on first place but that framework has the relevant (to me) drawback to require quite a complex configuration of the test arness as it requires to make and link a couple of libs. Well, it is not a really big effort but I want a quick and simple setup for my test arness so that it can be done in minutes.
-My test framework of choise is Catch by Phill Nash, I think it is great cause:</p>
+<p>My first attempt to TDD was with <em>gtest + gmock</em> but that framework has the relevant (to me) drawback to require quite a complex configuration of the test harness as it requires to make and link a couple of libs. Well, it is not a really big effort but I want a quick and simple setup for my test harness so that it can be in place in minutes.
+My current test framework of choise is <a class="reference external" href="https://github.com/philsquared/Catch">Catch</a> by <a class="reference external" href="http://www.levelofindirection.com">Phill Nash</a>, I think it is great cause:</p>
 <blockquote>
 <ul class="simple">
 <li>requires only a single header file into your test project</li>
@@ -129,12 +129,12 @@ My test framework of choise is Catch by Phill Nash, I think it is great cause:</
 <li>doesn't requires cutting edge compiler</li>
 </ul>
 </blockquote>
-<p>The test project I was trying to convert, used <em>london school</em> style as you might expect by gmock involvement, but catch doesn't support for mock objects creation by itself. Therefore I sarted to find a quick and simple mock framework with not too much preprocessor magic involved.
+<p>But, the test project I was trying to convert, used some <em>london school</em> style as you might expect by gmock involvement, but catch doesn't have support (AFAIK)for mock objects creation by itself. Therefore I started to find a quick and simple mock framework with not too much preprocessor magic involved.
 I found <em>FakeIt</em> and decided to give it a try as it also is a single header library and it apply explicitelly as a Catch companion.</p>
 </div>
 <div class="section" id="linker-complains">
 <h2>Linker complains</h2>
-<p>FakeIt comes with a single header version created on purpose for Catch integration, compiling the first test has gone like a breeze, but the liker complained about unresolved symbols.</p>
+<p>FakeIt comes with a single header version created on purpose for Catch integration, compiling the first test has gone like a breeze, but the linker complained about unresolved symbols.</p>
 <p>It was about:</p>
 <pre class="literal-block">
 public: __thiscall Catch::SourceLineInfo::SourceLineInfo(void)
@@ -144,13 +144,14 @@ public: __thiscall Catch::ResultBuilder::ResultBuilder(char const *,struct Catch
 public: void __thiscall Catch::ResultBuilder::captureResult(enum Catch::ResultWas::OfType)
 public: void __thiscall Catch::ResultBuilder::react(void)
 </pre>
-<p>as you know, linker errors are a mess, this was just a selection.
-My first attent to solve was update to latest catch version but this didn't solve. Then started to search for the definitiions the linker complains about into the code and found them obscured by #ifdefs. Some further inquiry lead me to check for the <strong>CATCH_CONFIG_MAIN</strong> macro definition which was supposed to be defined to let Catch define a CLI interface for your test arness.
-That macro was not defined (my fail), simply defining it solved the linker problems.</p>
+<p>as you know, linker errors are a mess, this was just a subset.
+Clearly those error are about Catch or its integration with FakeIt. My first attempt to solve was update to latest Catch version but this didn't solve. Then started to search for the definitiions the linker complains about into the code and found them obscured by #ifdefs. Some further inquiry lead me to check for the <strong>CATCH_CONFIG_MAIN</strong> macro definition which was supposed to be defined to let Catch provide a CLI interface for my test harness.
+That macro was not defined (my fail), simply defining it solved the linker problems.
+Next step is to check whether those definitions should be there or not when user provides his own main method.</p>
 </div>
 <div class="section" id="final-advice">
 <h2>Final advice</h2>
-<p>Unless you have to provide your own main function the test arness and you are getting linker errors, check the <strong>CATCH_CONFIG_MAIN</strong> macro definition on first place, be sure it appear before the catch header file inclusion.</p>
+<p>Unless you have to provide your own main function the test harness and you are getting linker errors, check the <strong>CATCH_CONFIG_MAIN</strong> macro definition on first place, be sure it appear before the catch header file inclusion.</p>
 </div>
 
 
